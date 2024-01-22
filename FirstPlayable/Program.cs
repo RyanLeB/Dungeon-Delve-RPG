@@ -8,8 +8,13 @@ namespace FirstPlayable
 {
     internal class Program
     {
+        
+        
         static void Main(string[] args)
         {
+            TitleScreen title = new TitleScreen();
+            
+            title.ShowTitle();
         }
     }
 }
