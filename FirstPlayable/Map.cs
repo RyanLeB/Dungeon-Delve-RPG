@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.SqlServer.Server;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,14 @@ namespace FirstPlayable
 {
     internal class Map
     {
-        
-    
+        public static string path;
+        public static string RPGMap = @"RPGMap.txt";
+        static string[] floor;
+        static char[,] layout;
+
+        static int mapX;
+        static int mapY;
+        static int maximumX;
+        static int maximumY;
     }
 }
