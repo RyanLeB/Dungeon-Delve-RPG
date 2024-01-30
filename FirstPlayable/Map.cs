@@ -14,7 +14,7 @@ namespace FirstPlayable
         static string[] floor;
         static char[,] layout;
 
-        static int mapX;
+        public int mapX;
         static int mapY;
         static int maximumX;
         static int maximumY;
