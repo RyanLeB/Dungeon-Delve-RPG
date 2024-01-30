@@ -6,22 +6,23 @@ using System.Threading.Tasks;
 
 namespace FirstPlayable
 {
-    internal class Player
+    internal class Player : Entity
     {
-        public Position position;
-        
-        public HealthSystem healthSystem;
+        public int playerDMG;
+        public int playerMaxHealth;
+        public int playerExp;
+        public int playerSeeds;
 
         public Player()
         {
-            healthSystem = new HealthSystem();
-            position.x = 0;
-            position.y = 0;
-        }
-        
-        public struct Position
-        {
-            public int x, y;
+            healthSystem.SetHealth(playerMaxHealth);
+            
+                
+            playerSeeds = 0;
+            playerMaxHealth = 0;
+            playerExp = 0;
+            playerDMG = 20;
+
         }
     
     }
