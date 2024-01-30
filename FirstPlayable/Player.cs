@@ -53,7 +53,7 @@ namespace FirstPlayable
 
         public void DisplayPlayer()
         {
-            Console.SetCursorPosition(Position.x, Position.y);
+            Console.SetCursorPosition(Entity.x, Entity.y);
         }
     }
 }
