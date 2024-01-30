@@ -12,9 +12,13 @@ namespace FirstPlayable
         
         static void Main(string[] args)
         {
+            Player player = new Player();
+            Enemy enemy = new Enemy();
+            
             TitleScreen title = new TitleScreen();
             
             title.ShowTitle();
+
         }
     }
 }
