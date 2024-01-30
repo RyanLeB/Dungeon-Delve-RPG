@@ -8,18 +8,21 @@ namespace FirstPlayable
 {
     internal class Player
     {
-        // Movement
-        static ConsoleKeyInfo playerController;
+        public Position position;
         
-        static int playerPositionX;
-        static int playerPositionY;
+        public HealthSystem healthSystem;
 
-        // Health
-        static int maxPlayerHealth;
-        static int playerHealth;
-
-        // Damage
-        static int playerDamage;
+        public Player()
+        {
+            healthSystem = new HealthSystem();
+            position.x = 0;
+            position.y = 0;
+        }
+        
+        public struct Position
+        {
+            public int x, y;
+        }
     
     }
 }

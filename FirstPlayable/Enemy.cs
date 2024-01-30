@@ -8,5 +8,8 @@ namespace FirstPlayable
 {
     internal class Enemy
     {
+        static int maxEnemyHealth;
+        static int enemyHealth;
+        static bool enemyAlive;
     }
 }
