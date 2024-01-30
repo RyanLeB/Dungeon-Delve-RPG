@@ -15,8 +15,8 @@ namespace FirstPlayable
         public string mapPath;
         string level1 = @"RPGMap1.txt";
         string level2 = @"RPGMap2.txt";
-        static string[] floor;
-        static char[,] layout;
+        public string[] floor;
+        public char[,] layout;
 
         // Constructor
         public Map()

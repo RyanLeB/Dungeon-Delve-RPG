@@ -6,10 +6,24 @@ using System.Threading.Tasks;
 
 namespace FirstPlayable
 {
-    internal class Enemy
+    internal class Enemy : Entity
     {
-        static int maxEnemyHealth;
-        static int enemyHealth;
-        static bool enemyAlive;
+        public int enemyMaxHP;
+        public int droppedEXP;
+        public int enemyDamage;
+
+
+        public Enemy()
+        {
+
+            healthSystem.SetHealth(enemyMaxHP);
+
+            droppedEXP = 10;
+            enemyDamage = 10;
+            enemyMaxHP = 50;
+
+        }
+
+
     }
 }
