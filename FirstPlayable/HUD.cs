@@ -6,15 +6,14 @@ using System.Threading.Tasks;
 
 namespace FirstPlayable
 {
-    internal class HUD : Map
+    internal class HUD
     {
-        Map map = new Map();
-        
-        static void DisplayHUD()
+
+        static void DisplayLegend()
         {
-           
+            Console.SetCursorPosition(0, Map.mapY + 2);
+            Console.WriteLine("Player = !" + "\n" + "Enemy = E" + "\n" + "Walls = #" + "\n" + "Floor = -" + "\n" + "Seeds = &" + "\n" + "SpikeTrap = ^  Door: %");
         }
-    
-    
+
     }
 }

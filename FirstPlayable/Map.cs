@@ -9,8 +9,10 @@ namespace FirstPlayable
 {
     internal class Map
     {
-        int mapX;
-        int mapY;
+        public int mapX;
+        public int mapY;
+        int maximumX;
+        int maximumY;
         
         public string mapPath;
         string level1 = @"RPGMap1.txt";

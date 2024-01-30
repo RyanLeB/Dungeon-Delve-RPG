@@ -17,6 +17,10 @@ namespace FirstPlayable
             Console.WriteLine("--------------------------");
             Console.WriteLine("Your goal is to escape the Underworld by defeating monsters and walking through each level");
             Console.WriteLine("------------------------------------------------------------------------------------------");
+            Console.WriteLine("------------------------------------------------------------------------------------------");
+            Console.WriteLine("It's dangerous to go alone.... Good luck!");
+            
+
 
             Console.ReadKey(true);
             Console.Clear();

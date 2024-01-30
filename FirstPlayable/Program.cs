@@ -12,6 +12,8 @@ namespace FirstPlayable
         static Player Player1;
         static Enemy Enemy1;
         static Map levelMap;
+        static bool gameOver;
+        static bool levelComplete;
 
         
         static void Main(string[] args)

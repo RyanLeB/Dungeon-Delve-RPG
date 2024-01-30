@@ -11,7 +11,7 @@ namespace FirstPlayable
         public int enemyMaxHP;
         public int droppedEXP;
         public int enemyDamage;
-
+        static bool enemyAlive;
 
         public Enemy()
         {
@@ -24,6 +24,10 @@ namespace FirstPlayable
 
         }
 
+        public void EnemyAlive()
+        {
+            enemyAlive = true;
+        }
 
     }
 }
