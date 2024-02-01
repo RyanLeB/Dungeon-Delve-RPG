@@ -6,20 +6,26 @@ using System.Threading.Tasks;
 
 namespace FirstPlayable
 {
-    internal class Entity
+    internal abstract class Entity
     {
-        public int x; 
-        public int y;
 
+        public Position entityPosition;
         public HealthSystem healthSystem;
 
         public Entity()
         {
             healthSystem = new HealthSystem();
-            x = 0;
-            y = 0;
+            entityPosition.x = 0;
+            entityPosition.y = 0;
         }
 
+        public struct Position 
+        {
+            public int maxX;
+            public int maxY;
+            public int x;
+            public int y;
+        }
         
 
 
