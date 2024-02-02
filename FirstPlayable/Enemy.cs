@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace FirstPlayable
 {
-    public class Enemy
+    internal class Enemy
     {
+        // variables | encapsulation
+        
         public int enemyMaxHealth { get; set; }
         public int enemyHealth { get; set; }
         public int enemyDamage { get; set; }
@@ -35,7 +37,7 @@ namespace FirstPlayable
             // random roll to move
             Random randomRoll = new Random();
 
-            // enemy will have 1 of 4 options to move
+            // checks if enemy is alive so it doesn't bug out when it is actually killed
         if (enemyAlive == true) 
         { 
             int rollResult = randomRoll.Next(1, 5);
@@ -43,7 +45,8 @@ namespace FirstPlayable
                    (enemyMovementX == newEnemyPositionX && enemyMovementY == newEnemyPositionY) ||
                    mapLayout[enemyMovementY, enemyMovementX] == '#')
             {
-                rollResult = randomRoll.Next(1, 5); // Retry if the position is the same as the player or a wall
+                // retries the role
+                rollResult = randomRoll.Next(1, 5);
 
                 if (rollResult == 1)
                 {
@@ -82,12 +85,13 @@ namespace FirstPlayable
         }
             
             
-            // Update the enemy position
+            // Updates the enemies position
             positionY = enemyMovementY;
             positionX = enemyMovementX;
         }
 
 
+        // draws the enemy
         public void DrawEnemy()
         {
         if (enemyAlive == true) 

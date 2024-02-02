@@ -8,9 +8,9 @@ namespace FirstPlayable
 {
     public abstract class Entity
     {
-        public int entityMaxHealth { get; protected set; }
+        public int entityMaxHealth { get; set; }
         public int entityHealth { get; set; }
-        public int entityDamage { get; protected set; }
+        public int entityDamage { get; set; }
         public int positionX { get; set; }
         public int positionY { get; set; }
         public bool IsAlive { get; set; }

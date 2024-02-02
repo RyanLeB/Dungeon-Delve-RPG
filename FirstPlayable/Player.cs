@@ -8,8 +8,10 @@ using static FirstPlayable.Entity;
 
 namespace FirstPlayable
 {
-    public class Player 
+    internal class Player 
     {
+        // variables | encapsulation
+        
         public int playerMaxHealth { get; set; }
         public int playerHealth { get; set; }
         public int playerDamage { get; set; }
@@ -29,6 +31,7 @@ namespace FirstPlayable
             positionY = startY;
         }
 
+        // recieves player input
         public void PlayerInput(Map map, Enemy enemy)
         {
             ConsoleKeyInfo playerController;
@@ -51,55 +54,56 @@ namespace FirstPlayable
                 return;
             }
 
-            // Up
+            // moves up
             if (playerController.Key == ConsoleKey.UpArrow || playerController.Key == ConsoleKey.W)
             {
                 movementY = Math.Max(positionY - 1, 0);
                 HandleMovement(map, enemy, ref moved, ref newPlayerPositionX, ref newPlayerPositionY, movementX, movementY);
             }
 
-            // Down
+            // moves down
             if (playerController.Key == ConsoleKey.DownArrow || playerController.Key == ConsoleKey.S)
             {
                 movementY = Math.Min(positionY + 1, map.mapHeight - 1);
                 HandleMovement(map, enemy, ref moved, ref newPlayerPositionX, ref newPlayerPositionY, movementX, movementY);
             }
 
-            // Left
+            // moves left
             if (playerController.Key == ConsoleKey.LeftArrow || playerController.Key == ConsoleKey.A)
             {
                 movementX = Math.Max(positionX - 1, 0);
                 HandleMovement(map, enemy, ref moved, ref newPlayerPositionX, ref newPlayerPositionY, movementX, movementY);
             }
 
-            // Right
+            // moves right
             if (playerController.Key == ConsoleKey.RightArrow || playerController.Key == ConsoleKey.D)
             {
                 movementX = Math.Min(positionX + 1, map.mapWidth - 1);
                 HandleMovement(map, enemy, ref moved, ref newPlayerPositionX, ref newPlayerPositionY, movementX, movementY);
             }
 
-            // Winning door
+            // winning door
             if (map.layout[positionY, positionX] == '%')
             {
                 youWin = true;
                 gameOver = true;
             }
 
-            // Collectable seeds
+            // collectable seeds
             if (map.layout[positionY, positionX] == '&')
             {
                 currentSeeds += 1;
                 map.layout[positionY, positionX] = '~';
             }
 
-            // Exit game
+            // exit game
             if (playerController.Key == ConsoleKey.Escape)
             {
                 Environment.Exit(1);
             }
         }
 
+        // handles things like collision checks and what the player is moving towards
         private void HandleMovement(Map map, Enemy enemy, ref bool moved, ref int newPlayerPositionX, ref int newPlayerPositionY, int movementX, int movementY)
         {
             if (moved == false && map.layout[movementY, movementX] != '#')
@@ -141,6 +145,8 @@ namespace FirstPlayable
             }
         }
 
+        // attack enemy method
+        
         private void AttackEnemy(Enemy enemy)
         {
             if (Math.Abs(positionX - enemy.positionX) <= 1 && Math.Abs(positionY - enemy.positionY) <= 1)
@@ -155,6 +161,7 @@ namespace FirstPlayable
             }
         }
 
+        // draws the player "!"
         public void DrawPlayer()
         {
             Console.SetCursorPosition(positionX, positionY);

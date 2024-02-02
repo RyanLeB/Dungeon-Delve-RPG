@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace FirstPlayable
 {
-    public class Map
+    internal class Map
     {
+        // variables | encapsulation
+        
         private string path;
         private string[] floor;
         public char[,] layout;
@@ -27,6 +29,8 @@ namespace FirstPlayable
             CreateMap();
         }
 
+        
+        // creates map
         private void CreateMap()
         {
             mapWidth = floor[0].Length;
@@ -53,6 +57,7 @@ namespace FirstPlayable
             }
         }
 
+        // draws out map on screen
         public void DrawMap(Player player, Enemy enemy)
         {
             Console.Clear();
