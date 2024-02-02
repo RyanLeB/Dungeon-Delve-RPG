@@ -8,6 +8,8 @@ namespace FirstPlayable
 {
     public abstract class Entity
     {
+        
+        
         public int entityMaxHealth { get; set; }
         public int entityHealth { get; set; }
         public int entityDamage { get; set; }

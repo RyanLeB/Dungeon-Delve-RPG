@@ -67,7 +67,7 @@ namespace FirstPlayable
             private void DisplayHUD()
             {
                 Console.SetCursorPosition(0, map.mapHeight + 1);
-                Console.WriteLine($"Player Health: {player.playerHealth}/{player.playerMaxHealth} | Collected Seeds: {player.currentSeeds} | Enemy Health: {enemy.enemyHealth}/{enemy.enemyMaxHealth}");
+                Console.WriteLine($"Player Health: {player.currentHealth}/{player.maximumHealth} | Collected Seeds: {player.currentSeeds} | Enemy Health: {enemy.currentHealth}/{enemy.maximumHealth}");
             }
 
             // displays the legend

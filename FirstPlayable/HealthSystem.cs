@@ -8,6 +8,9 @@ namespace FirstPlayable
 {
     internal class HealthSystem
     {
+        
+        // could only manage to get it functional with healthsystem being in player and enemy class, will look at this again in future
+        
         //public int Health;
 
         //public HealthSystem()
