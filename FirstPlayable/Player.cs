@@ -10,7 +10,7 @@ namespace FirstPlayable
 {
     internal class Player : Entity
     {
-        private List<Enemy> EnemyList;
+        
 
         public int PlayerDMG;
         public int PlayerMaxHealth;
@@ -20,16 +20,16 @@ namespace FirstPlayable
 
         public bool GameOver;
         public bool GameWon;
-        Player player;
+        
 
         public Player()
         {
-            EnemyList = new List<Enemy>();
+            
             EntityPosition = new Position();
+            PlayerMaxHealth = 0;
             HealthSystem.SetHealth(PlayerMaxHealth);
 
             PlayerSeeds = 0;
-            PlayerMaxHealth = 0;
             PlayerExp = 0;
             PlayerDMG = 20;
         }
@@ -292,6 +292,7 @@ namespace FirstPlayable
             {
                 GameWon = true;
                 GameOver = true;
+                
             }
 
             // Collectable seeds

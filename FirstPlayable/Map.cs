@@ -48,6 +48,8 @@ namespace FirstPlayable
                     layout[i, j] = floor[i][j];
                 }
             }
+            mapX = layout.GetLength(1);
+            mapY = layout.GetLength(0);
         }
 
         public void DrawMap()

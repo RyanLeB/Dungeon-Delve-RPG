@@ -22,11 +22,11 @@ namespace FirstPlayable
             OnStart();
             title.ShowTitle();
 
-            levelMap.DrawMap();
+           
             
             while (!gameOver && !levelComplete)
             {
-                Console.Clear();
+                
                 Player1.HandlePlayerInput(levelMap, Enemy1);
                 levelMap.DrawMap();
 

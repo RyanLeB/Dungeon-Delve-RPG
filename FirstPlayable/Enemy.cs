@@ -19,11 +19,11 @@ namespace FirstPlayable
 
         public Enemy()
         {
+            EnemyMaxHP = 50;
             HealthSystem.SetHealth(EnemyMaxHP);
 
             DroppedEXP = 10;
             EnemyDamage = 10;
-            EnemyMaxHP = 50;
             Alive = true;
         }
 
