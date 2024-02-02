@@ -8,305 +8,159 @@ using static FirstPlayable.Entity;
 
 namespace FirstPlayable
 {
-    internal class Player : Entity
+    public class Player
     {
-        
+        public int playerMaxHealth { get; private set; }
+        public int playerHealth { get; set; }
+        public int playerDamage { get; private set; }
+        public int positionX { get; set; }
+        public int positionY { get; set; }
+        public int currentSeeds { get; private set; }
+        public bool youWin { get; private set; }
+        public bool gameOver { get; private set; }
+        public bool levelComplete { get; set; }
 
-        public int PlayerDMG;
-        public int PlayerMaxHealth;
-        public int PlayerExp;
-        public int PlayerSeeds;
-        public ConsoleKeyInfo PlayerInput;
-
-        public bool GameOver;
-        public bool GameWon;
-        
-
-        public Player()
+        public Player(int maxHealth, int health, int damage, int startX, int startY)
         {
-            
-            EntityPosition = new Position();
-            PlayerMaxHealth = 0;
-            HealthSystem.SetHealth(PlayerMaxHealth);
-
-            PlayerSeeds = 0;
-            PlayerExp = 0;
-            PlayerDMG = 20;
+            playerMaxHealth = maxHealth;
+            playerHealth = health;
+            playerDamage = damage;
+            positionX = startX;
+            positionY = startY;
         }
 
-        public void SetPosition(int x, int y)
+        public void PlayerInput(Map map, Enemy enemy)
         {
-            EntityPosition.X = x;
-            EntityPosition.Y = y;
-        }
-
-        public void MaxPosition(Map map)
-        {
-            int mapX;
-            int mapY;
-
-            mapX = map.layout.GetLength(1);
-            mapY = map.layout.GetLength(0);
-
-            EntityPosition.maxX = mapX - 1;
-            EntityPosition.maxY = mapY - 1;
-        }
-
-        public void HandlePlayerInput(Map map, Enemy enemy)
-        {
+            ConsoleKeyInfo playerController;
             bool moved = false;
 
-            int movementX;
-            int movementY;
+            int movementX = positionX;
+            int movementY = positionY;
+
+            int newPlayerPositionX = positionX;
+            int newPlayerPositionY = positionY;
 
             moved = false;
 
-            PlayerInput = Console.ReadKey(true);
+            playerController = Console.ReadKey(true);
 
-            if (moved == false)
+            if (moved == false && playerController.Key == ConsoleKey.Spacebar)
+            {
+                AttackEnemy(enemy);
+                moved = true;
+                return;
+            }
 
-                // Up
-                if (PlayerInput.Key == ConsoleKey.UpArrow || PlayerInput.Key == ConsoleKey.W)
-                {
-                    movementY = Math.Max(map.playerY - 1, 0);
-
-                    if (movementY <= 0)
-                    {
-                        movementY = 0;
-                    }
-
-                    if (movementY == map.enemyY && EntityPosition.X == map.enemyX)
-                    {
-                        enemy.EnemyMaxHP -= 1;
-                        if (enemy.HealthSystem.Health <= 0)
-                        {
-                            map.enemyX = 0;
-                            enemy.EntityPosition.Y = 0;
-                            enemy.Alive = false;
-                        }
-
-                        return;
-                    }
-
-                    if (map.layout[movementY, EntityPosition.X] == '^')
-                    {
-                        HealthSystem.Health -= 1;
-                        if (HealthSystem.Health <= 0)
-                        {
-                            GameOver = true;
-                        }
-                    }
-
-                    if (map.layout[movementY, EntityPosition.X] == '#')
-                    {
-                        movementY = EntityPosition.Y;
-                        EntityPosition.Y = movementY;
-                        return;
-                    }
-
-                    if (map.layout[movementY, EntityPosition.X] == 'E')
-                    {
-                        movementY = EntityPosition.Y;
-                        EntityPosition.Y = movementY;
-                        return;
-                    }
-                    else
-                    {
-                        moved = true;
-                        EntityPosition.Y = movementY;
-                        if (EntityPosition.Y <= 0)
-                        {
-                            EntityPosition.Y = 0;
-                        }
-                    }
-                }
+            // Up
+            if (playerController.Key == ConsoleKey.UpArrow || playerController.Key == ConsoleKey.W)
+            {
+                movementY = Math.Max(positionY - 1, 0);
+                HandleMovement(map, enemy, ref moved, ref newPlayerPositionX, ref newPlayerPositionY, movementX, movementY);
+            }
 
             // Down
-            if (PlayerInput.Key == ConsoleKey.DownArrow || PlayerInput.Key == ConsoleKey.S)
+            if (playerController.Key == ConsoleKey.DownArrow || playerController.Key == ConsoleKey.S)
             {
-                movementY = Math.Min(EntityPosition.Y + 1, map.maximumY);
-
-                if (movementY >= map.maximumY)
-                {
-                    movementY = map.maximumY;
-                }
-
-                if (movementY == enemy.EntityPosition.Y && EntityPosition.X == enemy.EntityPosition.X)
-                {
-                    enemy.HealthSystem.Health -= 1;
-                    if (enemy.HealthSystem.Health <= 0)
-                    {
-                        enemy.EntityPosition.X = 0;
-                        enemy.EntityPosition.Y = 0;
-                        enemy.Alive = false;
-                    }
-
-                    return;
-                }
-
-                if (map.layout[movementY, EntityPosition.X] == '^')
-                {
-                    HealthSystem.Health -= 1;
-                    if (HealthSystem.Health <= 0)
-                    {
-                        GameOver = true;
-                    }
-                }
-
-                if (map.layout[movementY, EntityPosition.X] == '#')
-                {
-                    movementY = EntityPosition.Y;
-                    EntityPosition.Y = movementY;
-                    return;
-                }
-
-                if (map.layout[movementY, EntityPosition.X] == 'E')
-                {
-                    movementY = EntityPosition.Y;
-                    EntityPosition.Y = movementY;
-                    return;
-                }
-                else
-                {
-                    moved = true;
-                    EntityPosition.Y = movementY;
-                    if (EntityPosition.Y >= map.maximumY)
-                    {
-                        EntityPosition.Y = map.maximumY;
-                    }
-                }
+                movementY = Math.Min(positionY + 1, map.mapHeight - 1);
+                HandleMovement(map, enemy, ref moved, ref newPlayerPositionX, ref newPlayerPositionY, movementX, movementY);
             }
 
             // Left
-            if (PlayerInput.Key == ConsoleKey.LeftArrow || PlayerInput.Key == ConsoleKey.A)
+            if (playerController.Key == ConsoleKey.LeftArrow || playerController.Key == ConsoleKey.A)
             {
-                movementX = Math.Max(EntityPosition.X - 1, 0);
-
-                if (movementX <= 0)
-                {
-                    movementX = 0;
-                }
-
-                if (movementX == enemy.EntityPosition.X && EntityPosition.Y == enemy.EntityPosition.Y)
-                {
-                    enemy.EntityPosition.Y -= 1;
-                    if (enemy.HealthSystem.Health <= 0)
-                    {
-                        enemy.EntityPosition.X = 0;
-                        enemy.EntityPosition.Y = 0;
-                        enemy.Alive = false;
-                    }
-                    return;
-                }
-
-                if (map.layout[EntityPosition.Y, movementX] == '^')
-                {
-                    HealthSystem.Health -= 1;
-                    if (HealthSystem.Health <= 0)
-                    {
-                        GameOver = true;
-                    }
-                }
-
-                if (map.layout[EntityPosition.Y, movementX] == '#')
-                {
-                    movementX = EntityPosition.X;
-                    EntityPosition.X = movementX;
-                    return;
-                }
-
-                if (map.layout[EntityPosition.Y, movementX] == 'E')
-                {
-                    movementX = EntityPosition.X;
-                    EntityPosition.X = movementX;
-                    return;
-                }
-                else
-                {
-                    moved = true;
-                    EntityPosition.X = movementX;
-                    if (EntityPosition.X <= 0)
-                    {
-                        EntityPosition.X = 0;
-                    }
-                }
+                movementX = Math.Max(positionX - 1, 0);
+                HandleMovement(map, enemy, ref moved, ref newPlayerPositionX, ref newPlayerPositionY, movementX, movementY);
             }
 
             // Right
-            if (PlayerInput.Key == ConsoleKey.RightArrow || PlayerInput.Key == ConsoleKey.D)
+            if (playerController.Key == ConsoleKey.RightArrow || playerController.Key == ConsoleKey.D)
             {
-                movementX = Math.Min(EntityPosition.X + 1, map.maximumX);
-
-                if (movementX >= map.maximumX)
-                {
-                    movementX = map.maximumX;
-                }
-
-                if (movementX == enemy.EntityPosition.X && EntityPosition.Y == enemy.EntityPosition.Y)
-                {
-                    enemy.HealthSystem.Health -= 1;
-                    if (enemy.HealthSystem.Health <= 0)
-                    {
-                        enemy.EntityPosition.X = 0;
-                        enemy.EntityPosition.Y = 0;
-                        enemy.Alive = false;
-                    }
-                    return;
-                }
-
-                if (map.layout[EntityPosition.Y, movementX] == '^')
-                {
-                    HealthSystem.Health -= 1;
-                    if (HealthSystem.Health <= 0)
-                    {
-                        GameOver = true;
-                    }
-                }
-
-                if (map.layout[EntityPosition.Y, movementX] == '#')
-                {
-                    movementX = EntityPosition.X;
-                    EntityPosition.Y = movementX;
-                    return;
-                }
-
-                if (map.layout[EntityPosition.Y, movementX] == 'E')
-                {
-                    movementX = EntityPosition.X;
-                    EntityPosition.X = movementX;
-                    return;
-                }
-                else
-                {
-                    moved = true;
-                    EntityPosition.X = movementX;
-                    if (EntityPosition.X >= map.maximumX)
-                    {
-                        EntityPosition.X = map.maximumX;
-                    }
-                }
+                movementX = Math.Min(positionX + 1, map.mapWidth - 1);
+                HandleMovement(map, enemy, ref moved, ref newPlayerPositionX, ref newPlayerPositionY, movementX, movementY);
             }
 
             // Winning door
-            if (map.layout[EntityPosition.Y, EntityPosition.X] == '%')
+            if (map.layout[positionY, positionX] == '%')
             {
-                GameWon = true;
-                GameOver = true;
-                
+                youWin = true;
+                gameOver = true;
             }
 
             // Collectable seeds
-            if (map.layout[EntityPosition.Y, EntityPosition.X] == '&')
+            if (map.layout[positionY, positionX] == '&')
             {
-                PlayerSeeds += 1;
-                map.layout[EntityPosition.Y, EntityPosition.X] = '~';
+                currentSeeds += 1;
+                map.layout[positionY, positionX] = '~';
             }
 
             // Exit game
-            if (PlayerInput.Key == ConsoleKey.Escape)
+            if (playerController.Key == ConsoleKey.Escape)
             {
                 Environment.Exit(1);
             }
+        }
+
+        private void HandleMovement(Map map, Enemy enemy, ref bool moved, ref int newPlayerPositionX, ref int newPlayerPositionY, int movementX, int movementY)
+        {
+            if (moved == false && map.layout[movementY, movementX] != '#')
+            {
+                if (movementY == enemy.positionY && movementX == enemy.positionX)
+                {
+                    enemy.enemyHealth -= 1;
+                    if (enemy.enemyHealth <= 0)
+                    {
+                        enemy.positionX = 0;
+                        enemy.positionY = 0;
+                        enemy.enemyAlive = false;
+                    }
+                    return;
+                }
+
+                if (map.layout[movementY, movementX] == '^')
+                {
+                    playerHealth -= 1;
+                    if (playerHealth <= 0)
+                    {
+                        gameOver = true;
+                    }
+                }
+
+                if (map.layout[movementY, movementX] == 'E')
+                {
+                    movementY = positionY;
+                    movementX = positionX;
+                    return;
+                }
+
+                else
+                {
+                    moved = true;
+                    positionY = movementY;
+                    positionX = movementX;
+                }
+            }
+        }
+
+        private void AttackEnemy(Enemy enemy)
+        {
+            if (Math.Abs(positionX - enemy.positionX) <= 1 && Math.Abs(positionY - enemy.positionY) <= 1)
+            {
+                enemy.enemyHealth -= 1;
+                if (enemy.enemyHealth <= 0)
+                {
+                    enemy.positionX = 0;
+                    enemy.positionY = 0;
+                    enemy.enemyAlive = false;
+                }
+            }
+        }
+
+        public void DrawPlayer()
+        {
+            Console.SetCursorPosition(positionX, positionY);
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("!");
+            Console.ResetColor();
         }
     }
 }

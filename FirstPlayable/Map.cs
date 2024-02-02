@@ -7,102 +7,86 @@ using System.Threading.Tasks;
 
 namespace FirstPlayable
 {
-    internal class Map : Entity
+    public class Map
     {
-        public static int mapX;
-        public static int mapY;
-        public int maximumX;
-        public int maximumY;
-
-        public int enemyX, enemyY;
-
-        public int playerX;
-        public int playerY;
-
-        public string mapPath;
-        string Level1 = @"RPGMap.txt";
-
-        public string[] floor;
+        private string path;
+        private string[] floor;
         public char[,] layout;
-        public bool levelComplete;
 
-        public Map()
+        public int mapWidth { get; private set; }
+        public int mapHeight { get; private set; }
+        public int initialPlayerPositionX { get; private set; }
+        public int initialPlayerPositionY { get; private set; }
+        public int initialEnemyPositionX { get; private set; }
+        public int initialEnemyPositionY { get; private set; }
+
+        public Map(string mapFileName)
         {
-            LoadMap();
+            path = mapFileName;
+            floor = File.ReadAllLines(path);
+            CreateMap();
         }
 
-        public void LoadMap()
+        private void CreateMap()
         {
-            mapPath = Level1;
-            floor = File.ReadAllLines(mapPath);
-            layout = new char[floor.Length, floor[0].Length];
-            MakeMap();
-        }
+            mapWidth = floor[0].Length;
+            mapHeight = floor.Length;
+            layout = new char[mapHeight, mapWidth];
 
-        public void MakeMap()
-        {
-            for (int i = 0; i < floor.Length; i++)
+            for (int i = 0; i < mapHeight; i++)
             {
-                for (int j = 0; j < floor[i].Length; j++)
+                for (int j = 0; j < mapWidth; j++)
                 {
                     layout[i, j] = floor[i][j];
+
+                    if (layout[i, j] == '!')
+                    {
+                        initialPlayerPositionX = j;
+                        initialPlayerPositionY = i;
+                    }
+                    else if (layout[i, j] == 'E')
+                    {
+                        initialEnemyPositionX = j;
+                        initialEnemyPositionY = i;
+                    }
                 }
             }
-            mapX = layout.GetLength(1);
-            mapY = layout.GetLength(0);
         }
 
-        public void DrawMap()
+        public void DrawMap(Player player, Enemy enemy)
         {
-            Console.SetCursorPosition(0, 0);
-            for (int k = 0; k < mapY; k++)
+            Console.Clear();
+
+            for (int k = 0; k < mapHeight; k++)
             {
-                for (int l = 0; l < mapX; l++)
+                for (int l = 0; l < mapWidth; l++)
                 {
                     char tile = layout[k, l];
 
-                    if (tile == '=' && levelComplete == false)
+                    if (tile == '=' && !player.levelComplete)
                     {
-                        playerX = l;
-                        playerY = k - 1;
-                        levelComplete = true;
+                        player.positionX = l;
+                        player.positionY = k - 1;
+                        player.levelComplete = true;
                         layout[k, l] = '#';
                     }
 
-                    if (tile == 'E' && levelComplete == false)
+                    if (tile == 'E' && !player.levelComplete)
                     {
-                        if (tile == 'E')
-                        {
-                            enemyX = l;
-                            enemyY = k;
-                        }
+                        enemy.positionX = l;
+                        enemy.positionY = k;
                     }
+
                     Console.Write(tile);
                 }
                 Console.WriteLine();
             }
 
-            PlayerPosition();
-            EnemyPosition();
+            player.DrawPlayer();
+            enemy.DrawEnemy();
             Console.SetCursorPosition(0, 0);
         }
 
-        public void PlayerPosition()
-        {
-            Console.SetCursorPosition(playerX, playerY);
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write("!");
-            Console.ResetColor();
-            layout[playerY, playerX] = '!'; // Update the layout array
-        }
-
-        public void EnemyPosition()
-        {
-            Console.SetCursorPosition(enemyX, enemyY);
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write("E");
-            Console.ResetColor();
-            layout[enemyY, enemyX] = 'E'; // Update the layout array
+        
         }
     }
-}

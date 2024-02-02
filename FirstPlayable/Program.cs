@@ -9,42 +9,12 @@ namespace FirstPlayable
 {
     internal class Program
     {
-        static Player Player1;
-        static Enemy Enemy1;
-        static Map levelMap;
-        static bool gameOver;
-        static bool levelComplete;
-
-        
         static void Main(string[] args)
         {
-            TitleScreen title = new TitleScreen();
-            OnStart();
-            title.ShowTitle();
-
-           
-            
-            while (!gameOver && !levelComplete)
-            {
-                
-                Player1.HandlePlayerInput(levelMap, Enemy1);
-                levelMap.DrawMap();
-
-                System.Threading.Thread.Sleep(100);
-            }
-            
-
+            Game game = new Game();
+            game.Start();
         }
-
-
-        static void OnStart()
-        {
-            levelMap = new Map();
-            Player1 = new Player();
-            Enemy1 = new Enemy();
-
-        }
-
+       
 
     }
 }

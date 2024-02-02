@@ -6,33 +6,26 @@ using System.Threading.Tasks;
 
 namespace FirstPlayable
 {
-    abstract class Entity
+    public abstract class Entity
     {
+        public int entityMaxHealth { get; protected set; }
+        public int entityHealth { get; set; }
+        public int entityDamage { get; protected set; }
+        public int positionX { get; set; }
+        public int positionY { get; set; }
+        public bool IsAlive { get; set; }
 
-        public Position EntityPosition;
-        public HealthSystem HealthSystem;
-
-        public Entity()
+        public Entity(int maxHealth, int health, int damage, int startX, int startY)
         {
-            HealthSystem = new HealthSystem();
-            EntityPosition = new Position();
-            EntityPosition.X = 0;
-            EntityPosition.Y = 0;
-            EntityPosition.maxX = 0;
-            EntityPosition.maxY = 0;
+            entityMaxHealth = maxHealth;
+            entityHealth = health;
+            entityDamage = damage;
+            positionX = startX;
+            positionY = startY;
+            IsAlive = true;
         }
 
-        public struct Position 
-        {
-            public int maxX;
-            public int maxY;
-            public int X;
-            public int Y;
-        }
-        
-        
-
-
-
+        public abstract void Move(int playerX, int playerY, int mapWidth, int mapHeight, char[,] mapLayout);
+        public abstract void Draw();
     }
 }

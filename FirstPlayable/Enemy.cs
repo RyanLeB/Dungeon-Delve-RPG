@@ -6,164 +6,97 @@ using System.Threading.Tasks;
 
 namespace FirstPlayable
 {
-    class Enemy : Entity
+    public class Enemy
     {
-        private Player CurrentPlayer;
+        public int enemyMaxHealth { get; private set; }
+        public int enemyHealth { get; set; }
+        public int enemyDamage { get; private set; }
+        public int positionX { get; set; }
+        public int positionY { get; set; }
+        public bool enemyAlive { get; set; }
 
-        public int EnemyMaxHP;
-        public int DroppedEXP;
-        public int EnemyDamage;
-        public int EnemyMaxX;
-        public int EnemyMaxY;
-        public bool Alive;
-
-        public Enemy()
+        public Enemy(int maxHealth, int damage, int startX, int startY)
         {
-            EnemyMaxHP = 50;
-            HealthSystem.SetHealth(EnemyMaxHP);
-
-            DroppedEXP = 10;
-            EnemyDamage = 10;
-            Alive = true;
+            enemyMaxHealth = maxHealth;
+            enemyHealth = maxHealth;
+            enemyDamage = damage;
+            positionX = startX;
+            positionY = startY;
+            enemyAlive = true;
         }
 
-        public void EnemyMaxPosition(Map map)
+        public void EnemyMovement(int playerX, int playerY, int mapWidth, int mapHeight, char[,] mapLayout)
         {
-            int mapX;
-            int mapY;
-            mapX = map.layout.GetLength(1);
-            mapY = map.layout.GetLength(0);
+            int enemyMovementX = positionX;
+            int enemyMovementY = positionY;
+            int newEnemyPositionX = positionX;
+            int newEnemyPositionY = positionY;
 
-            EnemyMaxX = mapX - 1;
-            EnemyMaxY = mapY - 1;
+            // random roll to move
+            Random randomRoll = new Random();
+
+            // enemy will have 1 of 4 options to move
+        if (enemyAlive == true) 
+        { 
+            int rollResult = randomRoll.Next(1, 5);
+            while ((enemyMovementX == playerX && enemyMovementY == playerY) ||
+                   (enemyMovementX == newEnemyPositionX && enemyMovementY == newEnemyPositionY) ||
+                   mapLayout[enemyMovementY, enemyMovementX] == '#')
+            {
+                rollResult = randomRoll.Next(1, 5); // Retry if the position is the same as the player or a wall
+
+                if (rollResult == 1)
+                {
+                    enemyMovementY = positionY + 1;
+                    if (enemyMovementY >= mapHeight)
+                    {
+                        enemyMovementY = mapHeight - 1;
+                    }
+                }
+                else if (rollResult == 2)
+                {
+                    enemyMovementY = positionY - 1;
+                    if (enemyMovementY <= 0)
+                    {
+                        enemyMovementY = 0;
+                    }
+                }
+                else if (rollResult == 3)
+                {
+                    enemyMovementX = positionX - 1;
+                    if (enemyMovementX <= 0)
+                    {
+                        enemyMovementX = 0;
+                    }
+                }
+                else // rollResult == 4
+                {
+                    enemyMovementX = positionX + 1;
+                    if (enemyMovementX >= mapWidth)
+                    {
+                        enemyMovementX = mapWidth - 1;
+                    }
+                }
+            }
+            
+        }
+            
+            
+            // Update the enemy position
+            positionY = enemyMovementY;
+            positionX = enemyMovementX;
         }
 
-        public void EnemyMove(Map map)
+
+        public void DrawEnemy()
         {
-            if (!Alive)
-            {
-                return;
-            }
-
-            int movementX;
-            int movementY;
-
-            Random roll = new Random();
-            int rollResult = roll.Next(1, 5);
-
-            // enemy moving up
-            if (rollResult == 1)
-            {
-                movementY = EntityPosition.Y - 1;
-                if (movementY <= 0)
-                {
-                    movementY = 0;
-                }
-                if (movementY == map.playerY && EntityPosition.X == map.playerX)
-                {
-                    CurrentPlayer.HealthSystem.TakeDamage(EnemyDamage);
-                    return;
-                }
-                if (map.layout[movementY, EntityPosition.X] == '#')
-                {
-                    movementY = map.enemyY;
-                    EntityPosition.Y = movementY;
-                    return;
-                }
-                else
-                {
-                    EntityPosition.Y = movementY;
-                    if (EntityPosition.Y <= 0)
-                    {
-                        EntityPosition.Y = 0;
-                    }
-                }
-            }
-
-            // enemy moving down
-            if (rollResult == 2)
-            {
-                movementY = EntityPosition.Y + 1;
-                if (movementY >= EnemyMaxY)
-                {
-                    movementY = EnemyMaxY;
-                }
-                if (movementY == map.playerY && EntityPosition.X == map.playerX)
-                {
-                    CurrentPlayer.HealthSystem.TakeDamage(EnemyDamage);
-                    return;
-                }
-                if (map.layout[movementY, EntityPosition.X] == '#')
-                {
-                    movementY = map.enemyY;
-                    EntityPosition.Y = movementY;
-                    return;
-                }
-                else
-                {
-                    EntityPosition.Y = movementY;
-                    if (EntityPosition.Y >= EnemyMaxY)
-                    {
-                        EntityPosition.Y = EnemyMaxY;
-                    }
-                }
-            }
-
-            // enemy moving left
-            if (rollResult == 3)
-            {
-                movementX = EntityPosition.X - 1;
-                if (movementX >= EnemyMaxX)
-                {
-                    movementX = EnemyMaxX;
-                }
-                if (movementX <= 0)
-                {
-                    movementX = 0;
-                }
-                if (movementX == map.playerY && EntityPosition.Y == map.playerX)
-                {
-                    CurrentPlayer.HealthSystem.TakeDamage(EnemyDamage);
-                    return;
-                }
-                else
-                {
-                    EntityPosition.X = movementX;
-                    if (EntityPosition.X <= 0)
-                    {
-                        EntityPosition.X = 0;
-                    }
-                }
-            }
-            // enemy moving right
-            if (rollResult == 4)
-            {
-                movementX = EntityPosition.X + 1;
-                if (movementX == map.playerX && EntityPosition.Y == map.playerY)
-                {
-                    CurrentPlayer.HealthSystem.TakeDamage(EnemyDamage);
-                    return;
-                }
-                if (map.layout[EntityPosition.Y, movementX] == '#')
-                {
-                    movementX = EntityPosition.X;
-                    EntityPosition.X = movementX;
-                    return;
-                }
-                else
-                {
-                    EntityPosition.X = movementX;
-                    if (EntityPosition.X >= EnemyMaxX)
-                    {
-                        EntityPosition.X = EnemyMaxX;
-                    }
-                }
-            }
+        if (enemyAlive == true) 
+        {
+            Console.SetCursorPosition(positionX, positionY);
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write("E");
+            Console.ResetColor();
         }
-
-        public void PlayerSet(Player player)
-        {
-            CurrentPlayer = player;
         }
     }
 }
