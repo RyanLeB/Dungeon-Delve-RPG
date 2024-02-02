@@ -76,7 +76,7 @@ namespace FirstPlayable
                         layout[k, l] = '#';
                     }
 
-                    if (tile == 'E' && !player.levelComplete)
+                    if (tile == '*' && !player.levelComplete)
                     {
                         enemy.positionX = l;
                         enemy.positionY = k;

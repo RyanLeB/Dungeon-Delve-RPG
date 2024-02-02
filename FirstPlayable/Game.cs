@@ -12,12 +12,13 @@ namespace FirstPlayable
             private Map map;
             private Player player;
             private Enemy enemy;
-
+            
             public Game()
             {
                 map = new Map("RPGMap.txt");
                 player = new Player(6,6, 1, map.initialPlayerPositionX, map.initialPlayerPositionY);
                 enemy = new Enemy(3, 1, map.initialEnemyPositionX, map.initialEnemyPositionY);
+                
             }
 
             
@@ -43,6 +44,7 @@ namespace FirstPlayable
                 DisplayLegend();
                 PlayerInput();
                 enemy.EnemyMovement(player.positionX, player.positionY, map.mapWidth, map.mapHeight, map.layout);
+               
 
             }
 
