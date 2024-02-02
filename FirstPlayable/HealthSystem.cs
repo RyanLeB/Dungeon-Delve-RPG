@@ -8,38 +8,33 @@ namespace FirstPlayable
 {
     internal class HealthSystem
     {
-
-        public int health;
-        
+        public int Health;
 
         public HealthSystem()
         {
-
         }
 
         public void TakeDamage(int damage)
         {
-            health -= damage;
-            if (health <= 0) 
+            Health -= damage;
+            if (Health <= 0)
             {
-                health = 0;
+                Health = 0;
             }
         }
 
         public void Heal(int recoverHP, int maxHealth)
         {
-            health += recoverHP;
-            if (health > maxHealth)
+            Health += recoverHP;
+            if (Health > maxHealth)
             {
-                health = maxHealth;
+                Health = maxHealth;
             }
         }
-        
-        
-        public void SetHealth(int maxHP) 
+
+        public void SetHealth(int maxHP)
         {
-            health = maxHP;
+            Health = maxHP;
         }
-    
     }
 }

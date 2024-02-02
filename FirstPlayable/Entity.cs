@@ -9,25 +9,28 @@ namespace FirstPlayable
     abstract class Entity
     {
 
-        public Position entityPosition;
-        public HealthSystem healthSystem;
+        public Position EntityPosition;
+        public HealthSystem HealthSystem;
 
         public Entity()
         {
-            healthSystem = new HealthSystem();
-            entityPosition.x = 0;
-            entityPosition.y = 0;
+            HealthSystem = new HealthSystem();
+            EntityPosition = new Position();
+            EntityPosition.X = 0;
+            EntityPosition.Y = 0;
+            EntityPosition.maxX = 0;
+            EntityPosition.maxY = 0;
         }
 
         public struct Position 
         {
             public int maxX;
             public int maxY;
-            public int x;
-            public int y;
+            public int X;
+            public int Y;
         }
         
-
+        
 
 
 

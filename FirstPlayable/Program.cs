@@ -23,7 +23,15 @@ namespace FirstPlayable
             title.ShowTitle();
 
             levelMap.DrawMap();
-            Player.getPlayerInput()
+            
+            while (!gameOver && !levelComplete)
+            {
+                Console.Clear();
+                Player1.HandlePlayerInput(levelMap, Enemy1);
+                levelMap.DrawMap();
+
+                System.Threading.Thread.Sleep(100);
+            }
             
 
         }

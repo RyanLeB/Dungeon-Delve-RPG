@@ -9,50 +9,36 @@ namespace FirstPlayable
 {
     internal class Map : Entity
     {
-        
-        // X and Y coords
-        public int mapX;
-        public int mapY;
-        int maximumX;
-        int maximumY;
+        public static int mapX;
+        public static int mapY;
+        public int maximumX;
+        public int maximumY;
 
         public int enemyX, enemyY;
-        
-        
-        
+
         public int playerX;
         public int playerY;
-        
-        // map path
+
         public string mapPath;
-        string level1 = @"RPGMap1.txt";
-        string level2 = @"RPGMap2.txt";
+        string Level1 = @"RPGMap.txt";
+
         public string[] floor;
         public char[,] layout;
         public bool levelComplete;
-        
-        
-        
 
-        // Constructor
         public Map()
         {
             LoadMap();
         }
 
-       
-        
-        
-        // Loads level map
         public void LoadMap()
         {
-            mapPath = level1;
+            mapPath = Level1;
             floor = File.ReadAllLines(mapPath);
             layout = new char[floor.Length, floor[0].Length];
             MakeMap();
         }
 
-        // Makes level map
         public void MakeMap()
         {
             for (int i = 0; i < floor.Length; i++)
@@ -64,12 +50,9 @@ namespace FirstPlayable
             }
         }
 
-        // Draws level map
         public void DrawMap()
         {
-
-            Console.Clear();
-
+            Console.SetCursorPosition(0, 0);
             for (int k = 0; k < mapY; k++)
             {
                 for (int l = 0; l < mapX; l++)
@@ -95,15 +78,11 @@ namespace FirstPlayable
                     Console.Write(tile);
                 }
                 Console.WriteLine();
-
             }
 
             PlayerPosition();
             EnemyPosition();
             Console.SetCursorPosition(0, 0);
-
-
-
         }
 
         public void PlayerPosition()
@@ -112,6 +91,7 @@ namespace FirstPlayable
             Console.ForegroundColor = ConsoleColor.Green;
             Console.Write("!");
             Console.ResetColor();
+            layout[playerY, playerX] = '!'; // Update the layout array
         }
 
         public void EnemyPosition()
@@ -120,6 +100,7 @@ namespace FirstPlayable
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Write("E");
             Console.ResetColor();
+            layout[enemyY, enemyX] = 'E'; // Update the layout array
         }
     }
 }

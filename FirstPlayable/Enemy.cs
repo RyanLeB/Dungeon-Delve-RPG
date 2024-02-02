@@ -6,43 +6,45 @@ using System.Threading.Tasks;
 
 namespace FirstPlayable
 {
-    internal class Enemy : Entity
+    class Enemy : Entity
     {
         private Player CurrentPlayer;
-        
-        public int enemyMaxHP;
-        public int droppedEXP;
-        public int enemyDamage;
-        public int enemyMaxX;
-        public int enemyMaxY;
 
-
+        public int EnemyMaxHP;
+        public int DroppedEXP;
+        public int EnemyDamage;
+        public int EnemyMaxX;
+        public int EnemyMaxY;
+        public bool Alive;
 
         public Enemy()
         {
+            HealthSystem.SetHealth(EnemyMaxHP);
 
-            healthSystem.SetHealth(enemyMaxHP);
-
-            droppedEXP = 10;
-            enemyDamage = 10;
-            enemyMaxHP = 50;
-
+            DroppedEXP = 10;
+            EnemyDamage = 10;
+            EnemyMaxHP = 50;
+            Alive = true;
         }
 
-        public void enemyMaxPosition(Map map)
+        public void EnemyMaxPosition(Map map)
         {
             int mapX;
             int mapY;
             mapX = map.layout.GetLength(1);
             mapY = map.layout.GetLength(0);
-            
-            enemyMaxX = mapX - 1;
-            enemyMaxY = mapY - 1;  
-            
+
+            EnemyMaxX = mapX - 1;
+            EnemyMaxY = mapY - 1;
         }
 
         public void EnemyMove(Map map)
         {
+            if (!Alive)
+            {
+                return;
+            }
+
             int movementX;
             int movementY;
 
@@ -50,120 +52,118 @@ namespace FirstPlayable
             int rollResult = roll.Next(1, 5);
 
             // enemy moving up
-            if (rollResult == 1) 
+            if (rollResult == 1)
             {
-                movementY = entityPosition.y - 1;
-                if(movementY <= 0) 
+                movementY = EntityPosition.Y - 1;
+                if (movementY <= 0)
                 {
                     movementY = 0;
                 }
-                if(movementY == map.playerY && entityPosition.x == map.playerX)
+                if (movementY == map.playerY && EntityPosition.X == map.playerX)
                 {
-                    CurrentPlayer.healthSystem.TakeDamage(enemyDamage);
+                    CurrentPlayer.HealthSystem.TakeDamage(EnemyDamage);
                     return;
                 }
-                if (map.layout[movementY, entityPosition.x] == '#')
+                if (map.layout[movementY, EntityPosition.X] == '#')
                 {
-                    movementY = map.enemy1Y;
-                    entityPosition.y = movementY;
+                    movementY = map.enemyY;
+                    EntityPosition.Y = movementY;
                     return;
                 }
                 else
                 {
-                    entityPosition.y = movementY;
-                    if(entityPosition.y <= 0)
+                    EntityPosition.Y = movementY;
+                    if (EntityPosition.Y <= 0)
                     {
-                        entityPosition.y = 0;
+                        EntityPosition.Y = 0;
                     }
                 }
             }
 
             // enemy moving down
-            if(rollResult == 2)
+            if (rollResult == 2)
             {
-                movementY = entityPosition.y + 1;
-                if(movementY >= enemyMaxY)
+                movementY = EntityPosition.Y + 1;
+                if (movementY >= EnemyMaxY)
                 {
-                    movementY = enemyMaxY;
+                    movementY = EnemyMaxY;
                 }
-                if(movementY == map.playerY && entityPosition.x == map.playerX)
+                if (movementY == map.playerY && EntityPosition.X == map.playerX)
                 {
-                    CurrentPlayer.healthSystem.TakeDamage(enemyDamage);
+                    CurrentPlayer.HealthSystem.TakeDamage(EnemyDamage);
                     return;
                 }
-                if (map.layout[movementY, entityPosition.x] == '#')
+                if (map.layout[movementY, EntityPosition.X] == '#')
                 {
-                    movementY = map.enemy1Y;
-                    entityPosition.y = movementY;
+                    movementY = map.enemyY;
+                    EntityPosition.Y = movementY;
                     return;
                 }
                 else
                 {
-                    entityPosition.y = movementY;
-                    if(entityPosition.y >= enemyMaxY)
+                    EntityPosition.Y = movementY;
+                    if (EntityPosition.Y >= EnemyMaxY)
                     {
-                        entityPosition.y = enemyMaxY;
+                        EntityPosition.Y = EnemyMaxY;
                     }
                 }
-
             }
 
-            // enemy moving left 
-            if(rollResult == 3)
+            // enemy moving left
+            if (rollResult == 3)
             {
-                movementX = entityPosition.x - 1;
-                if(movementX >= enemyMaxX)
+                movementX = EntityPosition.X - 1;
+                if (movementX >= EnemyMaxX)
                 {
-                    movementX = enemyMaxX;
+                    movementX = EnemyMaxX;
                 }
-                if(movementX <= 0)
+                if (movementX <= 0)
                 {
                     movementX = 0;
                 }
-                if(movementX == map.playerX && entityPosition.y == map.mapX)
+                if (movementX == map.playerY && EntityPosition.Y == map.playerX)
                 {
-                    CurrentPlayer.healthSystem.TakeDamage(enemyDamage);
+                    CurrentPlayer.HealthSystem.TakeDamage(EnemyDamage);
                     return;
                 }
                 else
                 {
-                    entityPosition.x = movementX;
-                    if(entityPosition.x <= 0)
+                    EntityPosition.X = movementX;
+                    if (EntityPosition.X <= 0)
                     {
-                        entityPosition.x = 0;
+                        EntityPosition.X = 0;
                     }
                 }
             }
             // enemy moving right
             if (rollResult == 4)
             {
-                movementX = entityPosition.x + 1;
-                if(movementX == map.playerX && entityPosition.y == map.playerY)
+                movementX = EntityPosition.X + 1;
+                if (movementX == map.playerX && EntityPosition.Y == map.playerY)
                 {
-                    CurrentPlayer.healthSystem.TakeDamage(enemyDamage);
+                    CurrentPlayer.HealthSystem.TakeDamage(EnemyDamage);
                     return;
                 }
-                if (map.layout[entityPosition.y, movementX] == '#')
+                if (map.layout[EntityPosition.Y, movementX] == '#')
                 {
-                    movementX = entityPosition.x;
-                    entityPosition.x = movementX;
+                    movementX = EntityPosition.X;
+                    EntityPosition.X = movementX;
                     return;
                 }
                 else
                 {
-                    entityPosition.x = movementX;
-                    if(entityPosition.x >= enemyMaxX) 
+                    EntityPosition.X = movementX;
+                    if (EntityPosition.X >= EnemyMaxX)
                     {
-                        entityPosition.x = enemyMaxX;
+                        EntityPosition.X = EnemyMaxX;
                     }
                 }
             }
-
         }
-        public void playerSet(Player player)
+
+        public void PlayerSet(Player player)
         {
             CurrentPlayer = player;
         }
-
     }
 }
