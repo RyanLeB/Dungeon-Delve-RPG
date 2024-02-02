@@ -8,16 +8,16 @@ using static FirstPlayable.Entity;
 
 namespace FirstPlayable
 {
-    public class Player
+    public class Player 
     {
-        public int playerMaxHealth { get; private set; }
+        public int playerMaxHealth { get; set; }
         public int playerHealth { get; set; }
-        public int playerDamage { get; private set; }
+        public int playerDamage { get; set; }
         public int positionX { get; set; }
         public int positionY { get; set; }
-        public int currentSeeds { get; private set; }
-        public bool youWin { get; private set; }
-        public bool gameOver { get; private set; }
+        public int currentSeeds { get; set; }
+        public bool youWin { get; set; }
+        public bool gameOver { get; set; }
         public bool levelComplete { get; set; }
 
         public Player(int maxHealth, int health, int damage, int startX, int startY)

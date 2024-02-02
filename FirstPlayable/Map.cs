@@ -13,12 +13,12 @@ namespace FirstPlayable
         private string[] floor;
         public char[,] layout;
 
-        public int mapWidth { get; private set; }
-        public int mapHeight { get; private set; }
-        public int initialPlayerPositionX { get; private set; }
-        public int initialPlayerPositionY { get; private set; }
-        public int initialEnemyPositionX { get; private set; }
-        public int initialEnemyPositionY { get; private set; }
+        public int mapWidth { get; set; }
+        public int mapHeight { get; set; }
+        public int initialPlayerPositionX { get; set; }
+        public int initialPlayerPositionY { get; set; }
+        public int initialEnemyPositionX { get; set; }
+        public int initialEnemyPositionY { get; set; }
 
         public Map(string mapFileName)
         {

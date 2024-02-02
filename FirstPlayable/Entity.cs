@@ -25,7 +25,6 @@ namespace FirstPlayable
             IsAlive = true;
         }
 
-        public abstract void Move(int playerX, int playerY, int mapWidth, int mapHeight, char[,] mapLayout);
-        public abstract void Draw();
+
     }
 }

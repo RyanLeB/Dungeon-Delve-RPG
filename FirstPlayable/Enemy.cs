@@ -8,9 +8,9 @@ namespace FirstPlayable
 {
     public class Enemy
     {
-        public int enemyMaxHealth { get; private set; }
+        public int enemyMaxHealth { get; set; }
         public int enemyHealth { get; set; }
-        public int enemyDamage { get; private set; }
+        public int enemyDamage { get; set; }
         public int positionX { get; set; }
         public int positionY { get; set; }
         public bool enemyAlive { get; set; }

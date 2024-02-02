@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FirstPlayable
 {
-    internal class Program
+    internal class Program : Game
     {
         static void Main(string[] args)
         {
