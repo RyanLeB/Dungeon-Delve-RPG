@@ -11,7 +11,7 @@ namespace FirstPlayable
 
         static void DisplayLegend()
         {
-            Console.SetCursorPosition(0, Map.mapY + 2);
+            // Console.SetCursorPosition(0, Map.mapY + 2);
             Console.WriteLine("Player = !" + "\n" + "Enemy = E" + "\n" + "Walls = #" + "\n" + "Floor = -" + "\n" + "Seeds = &" + "\n" + "SpikeTrap = ^  Door: %");
         }
 

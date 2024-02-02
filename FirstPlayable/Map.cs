@@ -7,18 +7,32 @@ using System.Threading.Tasks;
 
 namespace FirstPlayable
 {
-    internal class Map
+    internal class Map : Entity
     {
+        
+        // X and Y coords
         public int mapX;
         public int mapY;
         int maximumX;
         int maximumY;
+
+        public int enemyX, enemyY;
         
+        
+        
+        public int playerX;
+        public int playerY;
+        
+        // map path
         public string mapPath;
         string level1 = @"RPGMap1.txt";
         string level2 = @"RPGMap2.txt";
         public string[] floor;
         public char[,] layout;
+        public bool levelComplete;
+        
+        
+        
 
         // Constructor
         public Map()
@@ -26,6 +40,9 @@ namespace FirstPlayable
             LoadMap();
         }
 
+       
+        
+        
         // Loads level map
         public void LoadMap()
         {
@@ -48,21 +65,61 @@ namespace FirstPlayable
         }
 
         // Draws level map
-        public void DrawMap(char[,] levelMap) 
-        { 
-            Console.SetCursorPosition(0, 0);
-            for(int y = 0; y < mapY; y++)
-            {
-                for (int x = 0; x < mapX; x++)
-                {
-                    char tile = levelMap[y, x];
+        public void DrawMap()
+        {
 
+            Console.Clear();
+
+            for (int k = 0; k < mapY; k++)
+            {
+                for (int l = 0; l < mapX; l++)
+                {
+                    char tile = layout[k, l];
+
+                    if (tile == '=' && levelComplete == false)
+                    {
+                        playerX = l;
+                        playerY = k - 1;
+                        levelComplete = true;
+                        layout[k, l] = '#';
+                    }
+
+                    if (tile == 'E' && levelComplete == false)
+                    {
+                        if (tile == 'E')
+                        {
+                            enemyX = l;
+                            enemyY = k;
+                        }
+                    }
+                    Console.Write(tile);
                 }
-                Console.WriteLine("\n");
+                Console.WriteLine();
+
             }
+
+            PlayerPosition();
+            EnemyPosition();
             Console.SetCursorPosition(0, 0);
+
+
+
         }
 
+        public void PlayerPosition()
+        {
+            Console.SetCursorPosition(playerX, playerY);
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("!");
+            Console.ResetColor();
+        }
 
+        public void EnemyPosition()
+        {
+            Console.SetCursorPosition(enemyX, enemyY);
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write("E");
+            Console.ResetColor();
+        }
     }
 }

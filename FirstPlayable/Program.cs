@@ -22,8 +22,8 @@ namespace FirstPlayable
             OnStart();
             title.ShowTitle();
 
-            levelMap.DrawMap(levelMap.layout);
-            
+            levelMap.DrawMap();
+            Player.getPlayerInput()
             
 
         }
@@ -34,6 +34,7 @@ namespace FirstPlayable
             levelMap = new Map();
             Player1 = new Player();
             Enemy1 = new Enemy();
+
         }
 
 

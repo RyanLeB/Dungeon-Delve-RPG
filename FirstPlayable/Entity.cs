@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FirstPlayable
 {
-    internal abstract class Entity
+    abstract class Entity
     {
 
         public Position entityPosition;
