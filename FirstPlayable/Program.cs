@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace FirstPlayable
 {
-    internal class Program : Game
+    internal class Program : GameManager
     {
         static void Main(string[] args)
         {
             // very short Main due to Game class, just have to start here
             
-            Game game = new Game();
+            GameManager game = new GameManager();
             game.Start();
         }
        

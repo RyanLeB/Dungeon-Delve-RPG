@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 namespace FirstPlayable
 {
     
-        internal class Game
+        internal class GameManager
         {
             private Map map;
             private Player player;
             private Enemy enemy;
             
-            public Game()
+            public GameManager()
             {
                 map = new Map("RPGMap.txt");
                 player = new Player(6,6, 1, map.initialPlayerPositionX, map.initialPlayerPositionY);

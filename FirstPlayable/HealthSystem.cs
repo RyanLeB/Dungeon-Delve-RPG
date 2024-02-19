@@ -4,40 +4,53 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FirstPlayable
-{
-    internal class HealthSystem
+       
+    namespace FirstPlayable
     {
-        
-        // could only manage to get it functional with healthsystem being in player and enemy class, will look at this again in future
-        
-        //public int Health;
+        internal class HealthSystem
+        {
+            // variables | encapsulation
+            private int maximumHealth;
+            private int currentHealth;
 
-        //public HealthSystem()
-        //{
-        //}
+            public HealthSystem(int maxHealth)
+            {
+                maximumHealth = maxHealth;
+                currentHealth = maxHealth;
+            }
 
-        //public void TakeDamage(int damage)
-        //{
-         //   Health -= damage;
-          //  if (Health <= 0)
-          //  {
-          //      Health = 0;
-          //  }
-       // }
+            // Getters
+            public int GetCurrentHealth()
+            {
+                return currentHealth;
+            }
 
-        //public void Heal(int recoverHP, int maxHealth)
-        //{
-        //    Health += recoverHP;
-        //    if (Health > maxHealth)
-        //    {
-        //        Health = maxHealth;
-        //    }
-       // }
+            public int GetMaximumHealth()
+            {
+                return maximumHealth;
+            }
 
-       // public void SetHealth(int maxHP)
-       // {
-       //     Health = maxHP;
-       // }
+            // Modify Health
+            public void Damage(int amount)
+            {
+                currentHealth -= amount;
+                if (currentHealth < 0)
+                    currentHealth = 0;
+            }
+
+            public void Heal(int amount)
+            {
+                currentHealth += amount;
+                if (currentHealth > maximumHealth)
+                    currentHealth = maximumHealth;
+            }
+
+            // Check Health
+            public bool IsDead()
+            {
+                return currentHealth <= 0;
+            }
+        }
     }
-}
+
+
