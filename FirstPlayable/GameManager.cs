@@ -62,6 +62,7 @@ namespace FirstPlayable
             else
             {
                 Console.WriteLine("You died...");
+                Console.WriteLine("Try Again!");
                 Console.ReadKey(true);
             }
         }
