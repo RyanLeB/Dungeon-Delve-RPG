@@ -76,7 +76,7 @@ namespace FirstPlayable
             private void DisplayLegend()
             {
                 Console.SetCursorPosition(0, map.mapHeight + 2);
-                Console.WriteLine("Player = !" + "\nEnemy = E" + "\nWalls = #" + "\nFloor = -" + "\nSeeds = &" + "\nSpikeTrap = ^  Door: %");
+                Console.WriteLine("Player = !" + "\nEnemy = E" + "\nWalls = #" + "\nFloor = -" + "\nSeeds = &" + "\nSpikeTrap = ^  Door: %" + "\nEnemySpawn = *");
             }
 
             private void PlayerInput()
