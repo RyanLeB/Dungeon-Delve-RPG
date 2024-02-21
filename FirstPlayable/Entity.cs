@@ -8,10 +8,7 @@ namespace FirstPlayable
 {
     public abstract class Entity
     {
-        
-        
-        public int entityMaxHealth { get; set; }
-        public int entityHealth { get; set; }
+       
         public int entityDamage { get; set; }
         public int positionX { get; set; }
         public int positionY { get; set; }
@@ -19,8 +16,7 @@ namespace FirstPlayable
 
         public Entity(int maxHealth, int health, int damage, int startX, int startY)
         {
-            entityMaxHealth = maxHealth;
-            entityHealth = health;
+            
             entityDamage = damage;
             positionX = startX;
             positionY = startY;

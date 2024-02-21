@@ -70,11 +70,12 @@ namespace FirstPlayable
             private void DisplayHUD()
             {
                 Console.SetCursorPosition(0, map.mapHeight + 1);
-                Console.WriteLine($"Player Health: {player.currentHealth}/{player.maximumHealth} | Collected Seeds: {player.currentSeeds} | Enemy Health: {enemy.currentHealth}/{enemy.maximumHealth}");
-            }
+                Console.WriteLine($"Player Health: {player.healthSystem.GetCurrentHealth()}/{player.healthSystem.GetMaximumHealth()} | Collected Seeds: {player.currentSeeds} | Enemy Health: {enemy.healthSystem.GetCurrentHealth()}/{enemy.healthSystem.GetMaximumHealth()}");
 
-            // displays the legend
-            private void DisplayLegend()
+        }
+
+        // displays the legend
+        private void DisplayLegend()
             {
                 Console.SetCursorPosition(0, map.mapHeight + 2);
                 Console.WriteLine("Player = !" + "\nEnemy = E" + "\nWalls = #" + "\nFloor = -" + "\nSeeds = &" + "\nSpikeTrap = ^  Door: %" + "\nEnemySpawn = *");

@@ -12,8 +12,7 @@ namespace FirstPlayable
     {
         // variables | encapsulation
         
-        public int maximumHealth { get; set; }
-        public int currentHealth { get; set; }
+        public HealthSystem healthSystem;
         public int playerDamage { get; set; }
         public int positionX { get; set; }
         public int positionY { get; set; }
@@ -24,8 +23,8 @@ namespace FirstPlayable
 
         public Player(int maxHealth, int health, int damage, int startX, int startY)
         {
-            maximumHealth = maxHealth;
-            currentHealth = health;
+            healthSystem = new HealthSystem(maxHealth);
+            healthSystem.Heal(health);
             playerDamage = damage;
             positionX = startX;
             positionY = startY;
@@ -110,8 +109,8 @@ namespace FirstPlayable
             {
                 if (movementY == enemy.positionY && movementX == enemy.positionX)
                 {
-                    enemy.currentHealth -= 1;
-                    if (enemy.currentHealth <= 0)
+                    enemy.healthSystem.Damage(playerDamage);
+                    if (enemy.healthSystem.IsDead())
                     {
                         enemy.positionX = 0;
                         enemy.positionY = 0;
@@ -122,8 +121,8 @@ namespace FirstPlayable
 
                 if (map.layout[movementY, movementX] == '^')
                 {
-                    currentHealth -= 1;
-                    if (currentHealth <= 0)
+                    healthSystem.Damage(1);
+                    if (healthSystem.IsDead())
                     {
                         gameOver = true;
                     }
@@ -151,8 +150,8 @@ namespace FirstPlayable
         {
             if (Math.Abs(positionX - enemy.positionX) <= 1 && Math.Abs(positionY - enemy.positionY) <= 1)
             {
-                enemy.currentHealth -= 1;
-                if (enemy.currentHealth <= 0)
+                enemy.healthSystem.Damage(playerDamage);
+                if (enemy.healthSystem.IsDead())
                 {
                     enemy.positionX = 0;
                     enemy.positionY = 0;

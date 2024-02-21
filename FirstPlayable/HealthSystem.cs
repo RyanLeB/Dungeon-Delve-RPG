@@ -5,22 +5,22 @@ using System.Text;
 using System.Threading.Tasks;
 
        
-    namespace FirstPlayable
+namespace FirstPlayable
+{
+    internal class HealthSystem
     {
-        internal class HealthSystem
+        // variables | encapsulation
+        private int maximumHealth;
+        private int currentHealth;
+
+        public HealthSystem(int maxHealth)
         {
-            // variables | encapsulation
-            private int maximumHealth;
-            private int currentHealth;
+        maximumHealth = maxHealth;
+        currentHealth = maxHealth;
+        }
 
-            public HealthSystem(int maxHealth)
-            {
-                maximumHealth = maxHealth;
-                currentHealth = maxHealth;
-            }
-
-            // Getters
-            public int GetCurrentHealth()
+        // Getters
+        public int GetCurrentHealth()
             {
                 return currentHealth;
             }

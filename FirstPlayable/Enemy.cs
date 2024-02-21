@@ -9,9 +9,8 @@ namespace FirstPlayable
     internal class Enemy
     {
         // variables | encapsulation
-        
-        public int maximumHealth { get; set; }
-        public int currentHealth { get; set; }
+
+        public HealthSystem healthSystem;
         public int enemyDamage { get; set; }
         public int positionX { get; set; }
         public int positionY { get; set; }
@@ -19,8 +18,7 @@ namespace FirstPlayable
 
         public Enemy(int maxHealth, int damage, int startX, int startY)
         {
-            maximumHealth = maxHealth;
-            currentHealth = maxHealth;
+            healthSystem = new HealthSystem(maxHealth);
             enemyDamage = damage;
             positionX = startX;
             positionY = startY;
