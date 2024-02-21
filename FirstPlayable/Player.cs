@@ -31,7 +31,7 @@ namespace FirstPlayable
         }
 
         // recieves player input
-        public void PlayerInput(Map map, Enemy enemy)
+        public void PlayerInput(Map map, Enemy enemy, Enemy boss)
         {
             ConsoleKeyInfo playerController;
             bool moved = false;
@@ -57,28 +57,28 @@ namespace FirstPlayable
             if (playerController.Key == ConsoleKey.UpArrow || playerController.Key == ConsoleKey.W)
             {
                 movementY = Math.Max(positionY - 1, 0);
-                HandleMovement(map, enemy, ref moved, ref newPlayerPositionX, ref newPlayerPositionY, movementX, movementY);
+                HandleMovement(map, enemy, boss, ref moved, ref newPlayerPositionX, ref newPlayerPositionY, movementX, movementY);
             }
 
             // moves down
             if (playerController.Key == ConsoleKey.DownArrow || playerController.Key == ConsoleKey.S)
             {
                 movementY = Math.Min(positionY + 1, map.mapHeight - 1);
-                HandleMovement(map, enemy, ref moved, ref newPlayerPositionX, ref newPlayerPositionY, movementX, movementY);
+                HandleMovement(map, enemy, boss, ref moved, ref newPlayerPositionX, ref newPlayerPositionY, movementX, movementY);
             }
 
             // moves left
             if (playerController.Key == ConsoleKey.LeftArrow || playerController.Key == ConsoleKey.A)
             {
                 movementX = Math.Max(positionX - 1, 0);
-                HandleMovement(map, enemy, ref moved, ref newPlayerPositionX, ref newPlayerPositionY, movementX, movementY);
+                HandleMovement(map, enemy, boss,ref moved, ref newPlayerPositionX, ref newPlayerPositionY, movementX, movementY);
             }
 
             // moves right
             if (playerController.Key == ConsoleKey.RightArrow || playerController.Key == ConsoleKey.D)
             {
                 movementX = Math.Min(positionX + 1, map.mapWidth - 1);
-                HandleMovement(map, enemy, ref moved, ref newPlayerPositionX, ref newPlayerPositionY, movementX, movementY);
+                HandleMovement(map, enemy, boss, ref moved, ref newPlayerPositionX, ref newPlayerPositionY, movementX, movementY);
             }
 
             // winning door
@@ -103,7 +103,7 @@ namespace FirstPlayable
         }
 
         // handles things like collision checks and what the player is moving towards
-        private void HandleMovement(Map map, Enemy enemy, ref bool moved, ref int newPlayerPositionX, ref int newPlayerPositionY, int movementX, int movementY)
+        private void HandleMovement(Map map, Enemy enemy, Enemy boss, ref bool moved, ref int newPlayerPositionX, ref int newPlayerPositionY, int movementX, int movementY)
         {
             if (moved == false && map.layout[movementY, movementX] != '#')
             {
@@ -115,6 +115,17 @@ namespace FirstPlayable
                         enemy.positionX = 0;
                         enemy.positionY = 0;
                         enemy.enemyAlive = false;
+                    }
+                    return;
+                }
+                if (movementY == boss.positionY && movementX == boss.positionX)
+                {
+                    boss.healthSystem.Damage(playerDamage);
+                    if (boss.healthSystem.IsDead())
+                    {
+                        boss.positionX = 0;
+                        boss.positionY = 0;
+                        boss.enemyAlive = false;
                     }
                     return;
                 }
@@ -130,6 +141,7 @@ namespace FirstPlayable
 
                 if (map.layout[movementY, movementX] == 'E')
                 {
+                    
                     movementY = positionY;
                     movementX = positionX;
                     return;
@@ -156,6 +168,19 @@ namespace FirstPlayable
                     enemy.positionX = 0;
                     enemy.positionY = 0;
                     enemy.enemyAlive = false;
+                }
+            }
+        }
+        private void AttackBoss(Enemy boss)
+        {
+            if (Math.Abs(positionX - boss.positionX) <= 1 && Math.Abs(positionY - boss.positionY) <= 1)
+            {
+                boss.healthSystem.Damage(playerDamage);
+                if (boss.healthSystem.IsDead())
+                {
+                    boss.positionX = 0;
+                    boss.positionY = 0;
+                    boss.enemyAlive = false;
                 }
             }
         }

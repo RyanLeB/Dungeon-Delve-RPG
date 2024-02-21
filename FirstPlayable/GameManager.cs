@@ -12,14 +12,15 @@ namespace FirstPlayable
             private Map map;
             private Player player;
             private Enemy enemy;
+            private Enemy boss;
             
             public GameManager()
             {
                 map = new Map("RPGMap.txt");
                 player = new Player(6,6, 1, map.initialPlayerPositionX, map.initialPlayerPositionY);
-                enemy = new Enemy(3, 1, map.initialEnemyPositionX, map.initialEnemyPositionY);
-                
-            }
+                enemy = new Enemy(5, 2, 8, 8, true);
+                boss = new Enemy(3, 1, map.initialEnemyPositionX, map.initialEnemyPositionY);
+        }
 
             
          // Start up
@@ -39,11 +40,12 @@ namespace FirstPlayable
             // game loop keeps on as long as the game isn't over or you haven't won   
             while (!player.gameOver)
             {
-                map.DrawMap(player, enemy);
+                map.DrawMap(player, enemy, boss);
                 DisplayHUD();
                 DisplayLegend();
                 PlayerInput();
                 enemy.EnemyMovement(player.positionX, player.positionY, map.mapWidth, map.mapHeight, map.layout);
+                boss.EnemyMovement(player.positionX, player.positionY, map.mapWidth, map.mapHeight, map.layout);
                
 
             }
@@ -70,7 +72,7 @@ namespace FirstPlayable
             private void DisplayHUD()
             {
                 Console.SetCursorPosition(0, map.mapHeight + 1);
-                Console.WriteLine($"Player Health: {player.healthSystem.GetCurrentHealth()}/{player.healthSystem.GetMaximumHealth()} | Collected Seeds: {player.currentSeeds} | Enemy Health: {enemy.healthSystem.GetCurrentHealth()}/{enemy.healthSystem.GetMaximumHealth()}");
+                Console.WriteLine($"Player Health: {player.healthSystem.GetCurrentHealth()}/{player.healthSystem.GetMaximumHealth()} | Collected Seeds: {player.currentSeeds} | Enemy Health: {enemy.healthSystem.GetCurrentHealth()}/{enemy.healthSystem.GetMaximumHealth()}| Boss Health: {boss.healthSystem.GetCurrentHealth()}/{boss.healthSystem.GetMaximumHealth()}");
 
         }
 
@@ -83,7 +85,7 @@ namespace FirstPlayable
 
             private void PlayerInput()
             {
-                player.PlayerInput(map, enemy);
+                player.PlayerInput(map, enemy, boss);
             }
         }
     }

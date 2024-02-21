@@ -25,6 +25,15 @@ namespace FirstPlayable
             enemyAlive = true;
         }
 
+        public Enemy(int maxHealth, int damage, int startX, int startY, bool isAlive)
+        {
+            healthSystem = new HealthSystem(maxHealth);
+            enemyDamage = damage;
+            positionX = startX;
+            positionY = startY;
+            enemyAlive = isAlive;
+        }
+
         public void EnemyMovement(int playerX, int playerY, int mapWidth, int mapHeight, char[,] mapLayout)
         {
             int enemyMovementX = positionX;
@@ -43,6 +52,7 @@ namespace FirstPlayable
                    (enemyMovementX == newEnemyPositionX && enemyMovementY == newEnemyPositionY) ||
                    mapLayout[enemyMovementY, enemyMovementX] == '#')
             {
+                
                 // retries the role
                 rollResult = randomRoll.Next(1, 5);
 
@@ -102,6 +112,17 @@ namespace FirstPlayable
             Console.Write("E");
             Console.ResetColor();
         }
+        }
+
+        public void DrawBoss()
+        {
+            if (enemyAlive == true)
+            {
+                Console.SetCursorPosition(positionX, positionY);
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.Write("B");
+                Console.ResetColor();
+            }
         }
     }
 }

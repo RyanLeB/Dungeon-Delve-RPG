@@ -58,7 +58,7 @@ namespace FirstPlayable
         }
 
         // draws out map on screen
-        public void DrawMap(Player player, Enemy enemy)
+        public void DrawMap(Player player, Enemy enemy, Enemy boss)
         {
             Console.Clear();
 
@@ -81,7 +81,11 @@ namespace FirstPlayable
                         enemy.positionX = l;
                         enemy.positionY = k;
                     }
-
+                    if (tile == '@' && !player.levelComplete)
+                    {
+                        boss.positionX = l;
+                        boss.positionY = k;
+                    }
                     Console.Write(tile);
                 }
                 Console.WriteLine();
@@ -89,6 +93,7 @@ namespace FirstPlayable
 
             player.DrawPlayer();
             enemy.DrawEnemy();
+            boss.DrawBoss();
             Console.SetCursorPosition(0, 0);
         }
 
