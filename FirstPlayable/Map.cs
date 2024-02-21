@@ -58,7 +58,7 @@ namespace FirstPlayable
         }
 
         // draws out map on screen
-        public void DrawMap(Player player, Enemy enemy, Enemy boss)
+        public void DrawMap(Player player, Enemy enemy, Enemy boss, Enemy runner)
         {
             Console.Clear();
 
@@ -122,11 +122,19 @@ namespace FirstPlayable
                     {
                         enemy.positionX = l;
                         enemy.positionY = k;
+                        layout[k, l] = '-';
                     }
                     if (tile == '@' && !player.levelComplete)
                     {
                         boss.positionX = l;
                         boss.positionY = k;
+                        layout[k, l] = '-';
+                    }
+                    if (tile == '_' && !player.levelComplete)
+                    {
+                        runner.positionX = l;
+                        runner.positionY = k;
+                        layout[k, l] = '-';
                     }
                     Console.Write(tile);
                 }
@@ -136,6 +144,7 @@ namespace FirstPlayable
             player.DrawPlayer();
             enemy.DrawEnemy();
             boss.DrawBoss();
+            runner.DrawRunner();
             Console.SetCursorPosition(0, 0);
             
         }

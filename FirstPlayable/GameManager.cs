@@ -11,15 +11,17 @@ namespace FirstPlayable
         {
             private Map map;
             private Player player;
-            private Enemy enemy;
+            private Enemy goblin;
             private Enemy boss;
-            
-            public GameManager()
+            private Enemy runner;
+        public GameManager()
             {
                 map = new Map("RPGMap.txt");
                 player = new Player(10,10, 1, map.initialPlayerPositionX, map.initialPlayerPositionY);
                 boss = new Enemy(5, 2, 8, 8, true);
-                enemy = new Enemy(3, 1, map.initialEnemyPositionX, map.initialEnemyPositionY);
+                goblin = new Enemy(3, 1, map.initialEnemyPositionX, map.initialEnemyPositionY);
+                runner = new Enemy(1, 2, map.initialEnemyPositionX, map.initialEnemyPositionY);
+               
         }
 
             
@@ -40,13 +42,13 @@ namespace FirstPlayable
             // game loop keeps on as long as the game isn't over or you haven't won   
             while (!player.gameOver)
             {
-                map.DrawMap(player, enemy, boss);
+                map.DrawMap(player, goblin, boss, runner);
                 DisplayHUD();
                 DisplayLegend();
                 PlayerInput();
-                enemy.EnemyMovement(player.positionX, player.positionY, map.mapWidth, map.mapHeight, map.layout);
+                goblin.EnemyMovement(player.positionX, player.positionY, map.mapWidth, map.mapHeight, map.layout);
                 boss.EnemyMovement(player.positionX, player.positionY, map.mapWidth, map.mapHeight, map.layout);
-               
+                runner.EnemyMovement(player.positionX, player.positionY, map.mapWidth, map.mapHeight, map.layout);
 
             }
 
@@ -72,7 +74,7 @@ namespace FirstPlayable
         private void DisplayHUD()
         {
             Console.SetCursorPosition(0, map.mapHeight + 1);
-            Console.WriteLine($"Player Health: {player.healthSystem.GetCurrentHealth()}/{player.healthSystem.GetMaximumHealth()} | Collected Seeds: {player.currentSeeds} | Enemy Health: {enemy.healthSystem.GetCurrentHealth()}/{enemy.healthSystem.GetMaximumHealth()}| Boss Health: {boss.healthSystem.GetCurrentHealth()}/{boss.healthSystem.GetMaximumHealth()}");
+            Console.WriteLine($"Player Health: {player.healthSystem.GetCurrentHealth()}/{player.healthSystem.GetMaximumHealth()} | Collected Seeds: {player.currentSeeds} | Goblin Health: {goblin.healthSystem.GetCurrentHealth()}/{goblin.healthSystem.GetMaximumHealth()}| Boss Health: {boss.healthSystem.GetCurrentHealth()}/{boss.healthSystem.GetMaximumHealth()}");
             List<string> liveLog = player.GetLiveLog();
             
             DisplayLiveLog(liveLog);
@@ -82,12 +84,12 @@ namespace FirstPlayable
         private void DisplayLegend()
         {
             Console.SetCursorPosition(0, map.mapHeight + 2);
-            Console.WriteLine("Player = !" + " || Enemy = E" + " || Boss = B" + "\nWalls = #" + " || Floor = -" + "\nSeeds = &" + "\nSpikeTrap = ^ || Door: %" + "\nEnemySpawn = *" + " || BossSpawn = @" + "\nHealth Pack = + || Damage Boost = ?");
+            Console.WriteLine("Player = !" + " || Goblin = E" + " || Boss = B" + "\nWalls = #" + " || Floor = -" + "\nSeeds = &" + "\nSpikeTrap = ^ || Door: %" + "\nEnemySpawn = *" + " || BossSpawn = @" + "\nHealth Pack = + || Damage Boost = ?");
         }
 
         private void PlayerInput()
         {
-            player.PlayerInput(map, enemy, boss);
+            player.PlayerInput(map, goblin, boss, runner);
         }
 
         private void DisplayLiveLog(List<string> liveLog)

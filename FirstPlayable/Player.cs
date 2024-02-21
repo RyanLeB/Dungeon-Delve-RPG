@@ -36,7 +36,7 @@ namespace FirstPlayable
 
 
         // recieves player input
-        public void PlayerInput(Map map, Enemy enemy, Enemy boss)
+        public void PlayerInput(Map map, Enemy enemy, Enemy boss, Enemy runner)
         {
             ConsoleKeyInfo playerController;
             bool moved = false;
@@ -62,28 +62,28 @@ namespace FirstPlayable
             if (playerController.Key == ConsoleKey.UpArrow || playerController.Key == ConsoleKey.W)
             {
                 movementY = Math.Max(positionY - 1, 0);
-                HandleMovement(map, enemy, boss, ref moved, ref newPlayerPositionX, ref newPlayerPositionY, movementX, movementY);
+                HandleMovement(map, enemy, boss, runner, ref moved, ref newPlayerPositionX, ref newPlayerPositionY, movementX, movementY);
             }
 
             // moves down
             if (playerController.Key == ConsoleKey.DownArrow || playerController.Key == ConsoleKey.S)
             {
                 movementY = Math.Min(positionY + 1, map.mapHeight - 1);
-                HandleMovement(map, enemy, boss, ref moved, ref newPlayerPositionX, ref newPlayerPositionY, movementX, movementY);
+                HandleMovement(map, enemy, boss, runner, ref moved, ref newPlayerPositionX, ref newPlayerPositionY, movementX, movementY);
             }
 
             // moves left
             if (playerController.Key == ConsoleKey.LeftArrow || playerController.Key == ConsoleKey.A)
             {
                 movementX = Math.Max(positionX - 1, 0);
-                HandleMovement(map, enemy, boss,ref moved, ref newPlayerPositionX, ref newPlayerPositionY, movementX, movementY);
+                HandleMovement(map, enemy, boss,runner, ref moved, ref newPlayerPositionX, ref newPlayerPositionY, movementX, movementY);
             }
 
             // moves right
             if (playerController.Key == ConsoleKey.RightArrow || playerController.Key == ConsoleKey.D)
             {
                 movementX = Math.Min(positionX + 1, map.mapWidth - 1);
-                HandleMovement(map, enemy, boss, ref moved, ref newPlayerPositionX, ref newPlayerPositionY, movementX, movementY);
+                HandleMovement(map, enemy, boss, runner, ref moved, ref newPlayerPositionX, ref newPlayerPositionY, movementX, movementY);
             }
 
             // winning door
@@ -100,6 +100,8 @@ namespace FirstPlayable
                 map.layout[positionY, positionX] = '~';
                 Console.ForegroundColor = ConsoleColor.Green;
                 UpdateLiveLog("Picked up a seed (&)");
+
+                return;
             }
 
             if (map.layout[positionY, positionX] == '+')
@@ -107,6 +109,8 @@ namespace FirstPlayable
                 healthSystem.Heal(1);
                 map.layout[positionY, positionX] = '~';
                 UpdateLiveLog("Picked up a health pack! (+)");
+
+                return;
             }
 
             if (map.layout[positionY, positionX] == '?')
@@ -114,6 +118,8 @@ namespace FirstPlayable
                 playerDamage += 1;
                 map.layout[positionY, positionX] = '~';
                 UpdateLiveLog("Picked up damage boost +1 (?)");
+
+                return;
             }
 
             // exit game
@@ -124,7 +130,7 @@ namespace FirstPlayable
         }
 
         // handles things like collision checks and what the player is moving towards
-        private void HandleMovement(Map map, Enemy enemy, Enemy boss, ref bool moved, ref int newPlayerPositionX, ref int newPlayerPositionY, int movementX, int movementY)
+        private void HandleMovement(Map map, Enemy enemy, Enemy boss, Enemy runner, ref bool moved, ref int newPlayerPositionX, ref int newPlayerPositionY, int movementX, int movementY)
         {
             if (moved == false && map.layout[movementY, movementX] != '#')
             {
@@ -132,7 +138,8 @@ namespace FirstPlayable
                 {
                     enemy.healthSystem.Damage(playerDamage);
                     healthSystem.Damage(1);
-
+                    UpdateLiveLog($"Dealt {playerDamage} damage to Goblin");
+                    UpdateLiveLog("Took Damage!");
                     if (healthSystem.IsDead())
                     {
                         gameOver = true;
@@ -149,7 +156,8 @@ namespace FirstPlayable
                 {
                     boss.healthSystem.Damage(playerDamage);
                     healthSystem.Damage(1);
-
+                    UpdateLiveLog($"Dealt {playerDamage} damage to the Boss");
+                    UpdateLiveLog("Took Damage!");
                     if (healthSystem.IsDead())
                     {
                         gameOver = true;
@@ -160,6 +168,26 @@ namespace FirstPlayable
                         boss.positionX = 0;
                         boss.positionY = 0;
                         boss.enemyAlive = false;
+                    }
+                    return;
+                }
+                
+                if (movementY == runner.positionY && movementX == runner.positionX)
+                {
+                    runner.healthSystem.Damage(playerDamage);
+                    healthSystem.Damage(1);
+                    UpdateLiveLog($"Dealt {playerDamage} damage to Runner");
+                    UpdateLiveLog("Took Damage!");
+                    if (healthSystem.IsDead())
+                    {
+                        gameOver = true;
+                    }
+
+                    if (runner.healthSystem.IsDead())
+                    {
+                        runner.positionX = 0;
+                        runner.positionY = 0;
+                        runner.enemyAlive = false;
                     }
                     return;
                 }

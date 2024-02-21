@@ -34,6 +34,9 @@ namespace FirstPlayable
             enemyAlive = isAlive;
         }
 
+        
+        
+
         public void EnemyMovement(int playerX, int playerY, int mapWidth, int mapHeight, char[,] mapLayout)
         {
             int enemyMovementX = positionX;
@@ -120,7 +123,18 @@ namespace FirstPlayable
             {
                 Console.SetCursorPosition(positionX, positionY);
                 Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.Write("B");
+                Console.Write("\u00B1");
+                Console.ResetColor();
+            }
+        }
+
+        public void DrawRunner()
+        {
+            if (enemyAlive == true)
+            {
+                Console.SetCursorPosition(positionX, positionY);
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write("R");
                 Console.ResetColor();
             }
         }
