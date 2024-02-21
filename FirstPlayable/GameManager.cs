@@ -29,7 +29,7 @@ namespace FirstPlayable
                 Console.WriteLine("Welcome to Dungeon Delve");
                 Console.WriteLine("-------------------------------");
                 Console.WriteLine("\nYour goal is to collect seeds around a dungeon map while avoiding or defeating the enemies.");
-                Console.WriteLine("\nThe world is known as The UnderWorld");
+                Console.WriteLine("\nThe world is known as The Underworld");
                 Console.WriteLine("--------------------------------");
                 Console.WriteLine("You can attack by either running into the enemy or pressing the spacebar when an enemy is close.");
                 Console.WriteLine("It's dangerous to go alone... good luck!");
@@ -74,6 +74,7 @@ namespace FirstPlayable
             Console.SetCursorPosition(0, map.mapHeight + 1);
             Console.WriteLine($"Player Health: {player.healthSystem.GetCurrentHealth()}/{player.healthSystem.GetMaximumHealth()} | Collected Seeds: {player.currentSeeds} | Enemy Health: {enemy.healthSystem.GetCurrentHealth()}/{enemy.healthSystem.GetMaximumHealth()}| Boss Health: {boss.healthSystem.GetCurrentHealth()}/{boss.healthSystem.GetMaximumHealth()}");
             List<string> liveLog = player.GetLiveLog();
+            
             DisplayLiveLog(liveLog);
         }
 
@@ -84,22 +85,26 @@ namespace FirstPlayable
             Console.WriteLine("Player = !" + " || Enemy = E" + " || Boss = B" + "\nWalls = #" + " || Floor = -" + "\nSeeds = &" + "\nSpikeTrap = ^ || Door: %" + "\nEnemySpawn = *" + " || BossSpawn = @" + "\nHealth Pack = + || Damage Boost = ?");
         }
 
-            private void PlayerInput()
-            {
-                player.PlayerInput(map, enemy, boss);
-            }
+        private void PlayerInput()
+        {
+            player.PlayerInput(map, enemy, boss);
+        }
 
         private void DisplayLiveLog(List<string> liveLog)
         {
             Console.SetCursorPosition(0, map.mapHeight + 9); 
+            
             Console.WriteLine("Live Log:");
 
             int logLimit = Math.Min(3, liveLog.Count); // Limits log to 3 most recent messages
             for (int i = liveLog.Count - logLimit; i < liveLog.Count; i++)
             {
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine(liveLog[i]);
             }
+            Console.ResetColor();
         }
     }
     }
+
 

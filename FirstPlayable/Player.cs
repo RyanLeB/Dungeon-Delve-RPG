@@ -98,6 +98,7 @@ namespace FirstPlayable
             {
                 currentSeeds += 1;
                 map.layout[positionY, positionX] = '~';
+                Console.ForegroundColor = ConsoleColor.Green;
                 UpdateLiveLog("Picked up a seed (&)");
             }
 
@@ -233,6 +234,7 @@ namespace FirstPlayable
         public void UpdateLiveLog(string message) 
         {
             liveLog.Add(message);
+            
         }
 
         public List<string> GetLiveLog()
