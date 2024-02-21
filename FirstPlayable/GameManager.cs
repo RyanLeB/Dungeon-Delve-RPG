@@ -18,8 +18,8 @@ namespace FirstPlayable
             {
                 map = new Map("RPGMap.txt");
                 player = new Player(6,6, 1, map.initialPlayerPositionX, map.initialPlayerPositionY);
-                enemy = new Enemy(5, 2, 8, 8, true);
-                boss = new Enemy(3, 1, map.initialEnemyPositionX, map.initialEnemyPositionY);
+                boss = new Enemy(5, 2, 8, 8, true);
+                enemy = new Enemy(3, 1, map.initialEnemyPositionX, map.initialEnemyPositionY);
         }
 
             
@@ -80,7 +80,7 @@ namespace FirstPlayable
         private void DisplayLegend()
             {
                 Console.SetCursorPosition(0, map.mapHeight + 2);
-                Console.WriteLine("Player = !" + "\nEnemy = E" + "\nWalls = #" + "\nFloor = -" + "\nSeeds = &" + "\nSpikeTrap = ^  Door: %" + "\nEnemySpawn = *");
+                Console.WriteLine("Player = !" + "\nEnemy = E" + "\nWalls = #" + "\nFloor = -" + "\nSeeds = &" + "\nSpikeTrap = ^  Door: %" + "\nEnemySpawn = *" + "\nBossSpawn = @");
             }
 
             private void PlayerInput()
