@@ -17,7 +17,7 @@ namespace FirstPlayable
             public GameManager()
             {
                 map = new Map("RPGMap.txt");
-                player = new Player(6,6, 1, map.initialPlayerPositionX, map.initialPlayerPositionY);
+                player = new Player(10,10, 1, map.initialPlayerPositionX, map.initialPlayerPositionY);
                 boss = new Enemy(5, 2, 8, 8, true);
                 enemy = new Enemy(3, 1, map.initialEnemyPositionX, map.initialEnemyPositionY);
         }
@@ -26,7 +26,7 @@ namespace FirstPlayable
          // Start up
         public void Start()
             {
-                Console.WriteLine("Welcome to my playable text RPG");
+                Console.WriteLine("Welcome to Dungeon Delve");
                 Console.WriteLine("-------------------------------");
                 Console.WriteLine("\nYour goal is to collect seeds around a dungeon map while avoiding or defeating the enemies.");
                 Console.WriteLine("\nThe world is known as The UnderWorld");
@@ -69,24 +69,37 @@ namespace FirstPlayable
             }
         }
             // displays the HUD
-            private void DisplayHUD()
-            {
-                Console.SetCursorPosition(0, map.mapHeight + 1);
-                Console.WriteLine($"Player Health: {player.healthSystem.GetCurrentHealth()}/{player.healthSystem.GetMaximumHealth()} | Collected Seeds: {player.currentSeeds} | Enemy Health: {enemy.healthSystem.GetCurrentHealth()}/{enemy.healthSystem.GetMaximumHealth()}| Boss Health: {boss.healthSystem.GetCurrentHealth()}/{boss.healthSystem.GetMaximumHealth()}");
-
+        private void DisplayHUD()
+        {
+            Console.SetCursorPosition(0, map.mapHeight + 1);
+            Console.WriteLine($"Player Health: {player.healthSystem.GetCurrentHealth()}/{player.healthSystem.GetMaximumHealth()} | Collected Seeds: {player.currentSeeds} | Enemy Health: {enemy.healthSystem.GetCurrentHealth()}/{enemy.healthSystem.GetMaximumHealth()}| Boss Health: {boss.healthSystem.GetCurrentHealth()}/{boss.healthSystem.GetMaximumHealth()}");
+            List<string> liveLog = player.GetLiveLog();
+            DisplayLiveLog(liveLog);
         }
 
         // displays the legend
         private void DisplayLegend()
-            {
-                Console.SetCursorPosition(0, map.mapHeight + 2);
-                Console.WriteLine("Player = !" + "\nEnemy = E" + "\nWalls = #" + "\nFloor = -" + "\nSeeds = &" + "\nSpikeTrap = ^  Door: %" + "\nEnemySpawn = *" + "\nBossSpawn = @");
-            }
+        {
+            Console.SetCursorPosition(0, map.mapHeight + 2);
+            Console.WriteLine("Player = !" + " || Enemy = E" + " || Boss = B" + "\nWalls = #" + " || Floor = -" + "\nSeeds = &" + "\nSpikeTrap = ^ || Door: %" + "\nEnemySpawn = *" + " || BossSpawn = @" + "\nHealth Pack = + || Damage Boost = ?");
+        }
 
             private void PlayerInput()
             {
                 player.PlayerInput(map, enemy, boss);
             }
+
+        private void DisplayLiveLog(List<string> liveLog)
+        {
+            Console.SetCursorPosition(0, map.mapHeight + 9); 
+            Console.WriteLine("Live Log:");
+
+            int logLimit = Math.Min(3, liveLog.Count); // Limits log to 3 most recent messages
+            for (int i = liveLog.Count - logLimit; i < liveLog.Count; i++)
+            {
+                Console.WriteLine(liveLog[i]);
+            }
         }
+    }
     }
 

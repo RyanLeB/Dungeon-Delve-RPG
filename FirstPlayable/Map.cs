@@ -62,11 +62,53 @@ namespace FirstPlayable
         {
             Console.Clear();
 
+            Console.BackgroundColor = ConsoleColor.DarkGray;
+
             for (int k = 0; k < mapHeight; k++)
             {
                 for (int l = 0; l < mapWidth; l++)
                 {
                     char tile = layout[k, l];
+                    switch (tile)
+                    {
+                        case '=':
+                            Console.ForegroundColor = ConsoleColor.Yellow; 
+                            break;
+                        case '-':
+                            Console.ForegroundColor = ConsoleColor.Gray; 
+                            break;
+                        case '&':
+                            Console.ForegroundColor = ConsoleColor.Cyan; 
+                            break;
+                        case '^':
+                            Console.ForegroundColor = ConsoleColor.Gray; 
+                            break;
+                        case '!':
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            break;
+                        case 'E':
+                            Console.ForegroundColor = ConsoleColor.Red; 
+                            break;
+                        case 'B':
+                            Console.ForegroundColor = ConsoleColor.Magenta; 
+                            break;
+                        case '#':
+                            Console.ForegroundColor = ConsoleColor.Gray; 
+                            break;
+                        case '%':
+                            Console.ForegroundColor = ConsoleColor.Yellow; 
+                            break;
+                        case '+':
+                            Console.ForegroundColor = ConsoleColor.DarkGreen; 
+                            break;
+                        case '?':
+                            Console.ForegroundColor = ConsoleColor.DarkMagenta; 
+                            break;
+                        default:
+                            Console.ForegroundColor = ConsoleColor.Gray; 
+                            break;
+                    }
+
 
                     if (tile == '=' && !player.levelComplete)
                     {
@@ -95,6 +137,7 @@ namespace FirstPlayable
             enemy.DrawEnemy();
             boss.DrawBoss();
             Console.SetCursorPosition(0, 0);
+            
         }
 
         

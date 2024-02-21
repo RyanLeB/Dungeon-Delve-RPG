@@ -21,6 +21,9 @@ namespace FirstPlayable
         public bool gameOver { get; set; }
         public bool levelComplete { get; set; }
 
+        // Log list
+        private List<string> liveLog;
+
         public Player(int maxHealth, int health, int damage, int startX, int startY)
         {
             healthSystem = new HealthSystem(maxHealth);
@@ -28,7 +31,9 @@ namespace FirstPlayable
             playerDamage = damage;
             positionX = startX;
             positionY = startY;
+            liveLog = new List<string>();
         }
+
 
         // recieves player input
         public void PlayerInput(Map map, Enemy enemy, Enemy boss)
@@ -93,6 +98,21 @@ namespace FirstPlayable
             {
                 currentSeeds += 1;
                 map.layout[positionY, positionX] = '~';
+                UpdateLiveLog("Picked up a seed (&)");
+            }
+
+            if (map.layout[positionY, positionX] == '+')
+            {
+                healthSystem.Heal(1);
+                map.layout[positionY, positionX] = '~';
+                UpdateLiveLog("Picked up a health pack! (+)");
+            }
+
+            if (map.layout[positionY, positionX] == '?')
+            {
+                playerDamage += 1;
+                map.layout[positionY, positionX] = '~';
+                UpdateLiveLog("Picked up damage boost +1 (?)");
             }
 
             // exit game
@@ -110,6 +130,12 @@ namespace FirstPlayable
                 if (movementY == enemy.positionY && movementX == enemy.positionX)
                 {
                     enemy.healthSystem.Damage(playerDamage);
+                    healthSystem.Damage(1);
+
+                    if (healthSystem.IsDead())
+                    {
+                        gameOver = true;
+                    }
                     if (enemy.healthSystem.IsDead())
                     {
                         enemy.positionX = 0;
@@ -121,6 +147,13 @@ namespace FirstPlayable
                 if (movementY == boss.positionY && movementX == boss.positionX)
                 {
                     boss.healthSystem.Damage(playerDamage);
+                    healthSystem.Damage(1);
+
+                    if (healthSystem.IsDead())
+                    {
+                        gameOver = true;
+                    }
+
                     if (boss.healthSystem.IsDead())
                     {
                         boss.positionX = 0;
@@ -138,6 +171,8 @@ namespace FirstPlayable
                         gameOver = true;
                     }
                 }
+
+               
 
                 if (map.layout[movementY, movementX] == 'E')
                 {
@@ -190,8 +225,19 @@ namespace FirstPlayable
         {
             Console.SetCursorPosition(positionX, positionY);
             Console.ForegroundColor = ConsoleColor.Green;
+            Console.BackgroundColor = ConsoleColor.Black;
             Console.Write("!");
             Console.ResetColor();
+        }
+
+        public void UpdateLiveLog(string message) 
+        {
+            liveLog.Add(message);
+        }
+
+        public List<string> GetLiveLog()
+        {
+            return liveLog;
         }
     }
 }
