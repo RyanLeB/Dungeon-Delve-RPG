@@ -37,7 +37,7 @@ namespace FirstPlayable
         
         
 
-        public void EnemyMovement(int playerX, int playerY, int mapWidth, int mapHeight, char[,] mapLayout)
+        public void EnemyMovement(int playerX, int playerY, int mapWidth, int mapHeight, char[,] mapLayout, Player player)
         {
             int enemyMovementX = positionX;
             int enemyMovementY = positionY;
@@ -48,61 +48,124 @@ namespace FirstPlayable
             Random randomRoll = new Random();
 
             // checks if enemy is alive so it doesn't bug out when it is actually killed
-        if (enemyAlive == true) 
-        { 
-            int rollResult = randomRoll.Next(1, 5);
-            while ((enemyMovementX == playerX && enemyMovementY == playerY) ||
-                   (enemyMovementX == newEnemyPositionX && enemyMovementY == newEnemyPositionY) ||
-                   mapLayout[enemyMovementY, enemyMovementX] == '#')
+            if (enemyAlive == true)
             {
-                
-                // retries the role
-                rollResult = randomRoll.Next(1, 5);
+                int rollResult = randomRoll.Next(1, 5);
+                while ((enemyMovementX == playerX && enemyMovementY == playerY) ||
+                       (enemyMovementX == newEnemyPositionX && enemyMovementY == newEnemyPositionY) ||
+                       mapLayout[enemyMovementY, enemyMovementX] == '#')
+                {
 
-                if (rollResult == 1)
-                {
-                    enemyMovementY = positionY + 1;
-                    if (enemyMovementY >= mapHeight)
+                    // retries the role
+                    rollResult = randomRoll.Next(1, 5);
+
+                    if (rollResult == 1)
                     {
-                        enemyMovementY = mapHeight - 1;
+                        enemyMovementY = positionY + 1;
+                        if (enemyMovementY >= mapHeight)
+                        {
+                            enemyMovementY = mapHeight - 1;
+                        }
+                    }
+                    else if (rollResult == 2)
+                    {
+                        enemyMovementY = positionY - 1;
+                        if (enemyMovementY <= 0)
+                        {
+                            enemyMovementY = 0;
+                        }
+                    }
+                    else if (rollResult == 3)
+                    {
+                        enemyMovementX = positionX - 1;
+                        if (enemyMovementX <= 0)
+                        {
+                            enemyMovementX = 0;
+                        }
+                    }
+                    else // rollResult == 4
+                    {
+                        enemyMovementX = positionX + 1;
+                        if (enemyMovementX >= mapWidth)
+                        {
+                            enemyMovementX = mapWidth - 1;
+                        }
                     }
                 }
-                else if (rollResult == 2)
+
+                
+                if (enemyMovementX == playerX && enemyMovementY == playerY)
                 {
-                    enemyMovementY = positionY - 1;
-                    if (enemyMovementY <= 0)
+                    player.healthSystem.Damage(enemyDamage);
+                    player.UpdateLiveLog($"Enemy dealt {enemyDamage} damage to you!");
+                    if (player.healthSystem.IsDead())
                     {
-                        enemyMovementY = 0;
-                    }
-                }
-                else if (rollResult == 3)
-                {
-                    enemyMovementX = positionX - 1;
-                    if (enemyMovementX <= 0)
-                    {
-                        enemyMovementX = 0;
-                    }
-                }
-                else // rollResult == 4
-                {
-                    enemyMovementX = positionX + 1;
-                    if (enemyMovementX >= mapWidth)
-                    {
-                        enemyMovementX = mapWidth - 1;
+                        player.gameOver = true;
                     }
                 }
             }
-            
-        }
-            
-            
-            // Updates the enemies position
-            positionY = enemyMovementY;
+
+
+                // Updates the enemies position
+                positionY = enemyMovementY;
             positionX = enemyMovementX;
         }
 
 
+        // Movement AI for runner
+        public void RunnerMovement(int playerX, int playerY, int mapWidth, int mapHeight, char[,] mapLayout, Player player)
+        {
+            int enemyMovementX = positionX;
+            int enemyMovementY = positionY;
 
+            
+            int distanceX = Math.Abs(playerX - positionX);
+            int distanceY = Math.Abs(playerY - positionY);
+
+            if (distanceX <= 5 && distanceY <= 5)
+            {
+                
+                if ((Math.Abs(positionX - playerX) == 1 && positionY == playerY) ||
+                    (Math.Abs(positionY - playerY) == 1 && positionX == playerX))
+                {
+                    
+                    player.healthSystem.Damage(enemyDamage);
+                    player.UpdateLiveLog($"Runner dealt {enemyDamage} damage to you!");
+                    if (player.healthSystem.IsDead())
+                    {
+                        player.gameOver = true;
+                    }
+                    return; 
+                }
+
+                
+                if (playerX < positionX && mapLayout[positionY, positionX - 1] != '#' && positionX - 1 != playerX)
+                {
+                    enemyMovementX--;
+                }
+                else if (playerX > positionX && mapLayout[positionY, positionX + 1] != '#' && positionX + 1 != playerX)
+                {
+                    enemyMovementX++;
+                }
+
+                if (playerY < positionY && mapLayout[positionY - 1, positionX] != '#' && positionY - 1 != playerY)
+                {
+                    enemyMovementY--;
+                }
+                else if (playerY > positionY && mapLayout[positionY + 1, positionX] != '#' && positionY + 1 != playerY)
+                {
+                    enemyMovementY++;
+                }
+            }
+
+            
+            if (enemyAlive)
+            {
+                
+                positionY = enemyMovementY;
+                positionX = enemyMovementX;
+            }
+        }
 
 
         // draws the enemy

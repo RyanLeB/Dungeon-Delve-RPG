@@ -33,7 +33,7 @@ namespace FirstPlayable
                 Console.WriteLine("\nYour goal is to collect seeds around a dungeon map while avoiding or defeating the enemies.");
                 Console.WriteLine("\nThe world is known as The Underworld");
                 Console.WriteLine("--------------------------------");
-                Console.WriteLine("You can attack by either running into the enemy or pressing the spacebar when an enemy is close.");
+                Console.WriteLine("You can attack by either running into the enemy but beware, they can hit you back");
                 Console.WriteLine("It's dangerous to go alone... good luck!");
                 Console.WriteLine("Press any key to start...");
                 Console.ReadKey(true);
@@ -46,9 +46,9 @@ namespace FirstPlayable
                 DisplayHUD();
                 DisplayLegend();
                 PlayerInput();
-                goblin.EnemyMovement(player.positionX, player.positionY, map.mapWidth, map.mapHeight, map.layout);
-                boss.EnemyMovement(player.positionX, player.positionY, map.mapWidth, map.mapHeight, map.layout);
-                runner.EnemyMovement(player.positionX, player.positionY, map.mapWidth, map.mapHeight, map.layout);
+                goblin.EnemyMovement(player.positionX, player.positionY, map.mapWidth, map.mapHeight, map.layout, player);
+                boss.EnemyMovement(player.positionX, player.positionY, map.mapWidth, map.mapHeight, map.layout, player);
+                runner.RunnerMovement(player.positionX, player.positionY, map.mapWidth, map.mapHeight, map.layout, player);
 
             }
 
