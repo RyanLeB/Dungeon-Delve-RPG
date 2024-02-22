@@ -17,6 +17,7 @@ namespace FirstPlayable
         public bool enemyAlive { get; set; }
 
         public string Name { get; set; }
+        
         public Enemy(int maxHealth, int damage, int startX, int startY, string name)
         {
             healthSystem = new HealthSystem(maxHealth);

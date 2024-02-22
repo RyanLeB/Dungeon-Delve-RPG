@@ -15,6 +15,7 @@ namespace FirstPlayable
             
             GameManager game = new GameManager();
             game.Start();
+
         }
        
 
