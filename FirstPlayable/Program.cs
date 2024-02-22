@@ -11,7 +11,7 @@ namespace FirstPlayable
     {
         static void Main(string[] args)
         {
-            // very short Main due to Game class, just have to start here
+            // very short Main due to GameManager class, just have to start here
             
             GameManager game = new GameManager();
             game.Start();
