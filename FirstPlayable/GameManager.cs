@@ -110,7 +110,7 @@ namespace FirstPlayable
         private void DisplayLegend()
         {
             Console.SetCursorPosition(0, map.mapHeight + 2);
-            Console.WriteLine($"Current Damage Output: {player.playerDamage}" + "\nPlayer = !" + " || Goblin = E" + " || Boss = ±" + "\nWalls = #" + " || Floor = -" + "\nSeeds = &" + "\nSpikeTrap = ^ || Door: %" + "\nHealth Pack = + || Damage Boost = ?");
+            Console.WriteLine($"\nCurrent Damage Output: {player.playerDamage}");
         }
 
         private void StartLevel()
@@ -136,12 +136,14 @@ namespace FirstPlayable
 
         private void DisplayLiveLog(List<string> liveLog)
         {
-            Console.SetCursorPosition(0, map.mapHeight + 9); 
-            
+            Console.SetCursorPosition(0, map.mapHeight + 7);
+
             Console.WriteLine("Live Log:");
 
             int logLimit = Math.Min(3, liveLog.Count); // Limits log to 3 most recent messages
-            for (int i = liveLog.Count - logLimit; i < liveLog.Count; i++)
+            int startIndex = liveLog.Count - logLimit; 
+
+            for (int i = liveLog.Count - 1; i >= startIndex; i--)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine(liveLog[i]);
