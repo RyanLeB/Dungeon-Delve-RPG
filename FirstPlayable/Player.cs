@@ -38,7 +38,7 @@ namespace FirstPlayable
 
 
         // recieves player input
-        public void PlayerInput(Map map, Enemy enemy, Enemy boss, Enemy runner)
+        public void PlayerInput(Map map, Enemy goblin, Enemy boss, Enemy runner)
         {
             ConsoleKeyInfo playerController;
             bool moved = false;
@@ -59,28 +59,28 @@ namespace FirstPlayable
             if (playerController.Key == ConsoleKey.UpArrow || playerController.Key == ConsoleKey.W)
             {
                 movementY = Math.Max(positionY - 1, 0);
-                HandleMovement(map, enemy, boss, runner, ref moved, ref newPlayerPositionX, ref newPlayerPositionY, movementX, movementY);
+                HandleMovement(map, goblin, boss, runner, ref moved, ref newPlayerPositionX, ref newPlayerPositionY, movementX, movementY);
             }
 
             // moves down
             if (playerController.Key == ConsoleKey.DownArrow || playerController.Key == ConsoleKey.S)
             {
                 movementY = Math.Min(positionY + 1, map.mapHeight - 1);
-                HandleMovement(map, enemy, boss, runner, ref moved, ref newPlayerPositionX, ref newPlayerPositionY, movementX, movementY);
+                HandleMovement(map, goblin, boss, runner, ref moved, ref newPlayerPositionX, ref newPlayerPositionY, movementX, movementY);
             }
 
             // moves left
             if (playerController.Key == ConsoleKey.LeftArrow || playerController.Key == ConsoleKey.A)
             {
                 movementX = Math.Max(positionX - 1, 0);
-                HandleMovement(map, enemy, boss,runner, ref moved, ref newPlayerPositionX, ref newPlayerPositionY, movementX, movementY);
+                HandleMovement(map, goblin, boss,runner, ref moved, ref newPlayerPositionX, ref newPlayerPositionY, movementX, movementY);
             }
 
             // moves right
             if (playerController.Key == ConsoleKey.RightArrow || playerController.Key == ConsoleKey.D)
             {
                 movementX = Math.Min(positionX + 1, map.mapWidth - 1);
-                HandleMovement(map, enemy, boss, runner, ref moved, ref newPlayerPositionX, ref newPlayerPositionY, movementX, movementY);
+                HandleMovement(map, goblin, boss, runner, ref moved, ref newPlayerPositionX, ref newPlayerPositionY, movementX, movementY);
             }
 
             
@@ -187,10 +187,13 @@ namespace FirstPlayable
                     map.layout[movementY, movementX] = '~';
                     Console.ForegroundColor = ConsoleColor.Green;
                     UpdateLiveLog("Picked up a seed (&)");
+                    
                     return;
-
-
                 }
+                
+                
+
+
 
                 if (map.layout[movementY, movementX] == '+')
                 {

@@ -58,7 +58,7 @@ namespace FirstPlayable
         }
 
         // draws out map on screen
-        public void DrawMap(Player player, Enemy enemy, Enemy boss, Enemy runner)
+        public void DrawMap(Player player, Enemy goblin, Enemy boss, Enemy runner)
         {
             Console.Clear();
 
@@ -120,8 +120,8 @@ namespace FirstPlayable
 
                     if (tile == '*' && !player.levelComplete)
                     {
-                        enemy.positionX = l;
-                        enemy.positionY = k;
+                        goblin.positionX = l;
+                        goblin.positionY = k;
                         layout[k, l] = '-';
                     }
                     if (tile == '@' && !player.levelComplete)
@@ -142,7 +142,8 @@ namespace FirstPlayable
             }
 
             player.DrawPlayer();
-            enemy.DrawEnemy();
+            goblin.DrawGoblin();
+           
             boss.DrawBoss();
             runner.DrawRunner();
             Console.SetCursorPosition(0, 0);

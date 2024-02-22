@@ -14,7 +14,7 @@ namespace FirstPlayable
         private Stopwatch levelTimer = new Stopwatch();
         private Map map;
         private Player player;
-        private Enemy goblin;
+        private Enemy goblin1;
         private Enemy boss;
         private Enemy runner;
         
@@ -23,8 +23,9 @@ namespace FirstPlayable
             map = new Map("RPGMap.txt");
             player = new Player(10,10, 1, map.initialPlayerPositionX, map.initialPlayerPositionY);
             boss = new Enemy(5, 2, 8, 8, true, "Boss");
-            goblin = new Enemy(3, 1, map.initialEnemyPositionX, map.initialEnemyPositionY, "Goblin");
+            goblin1 = new Enemy(3, 0, map.initialEnemyPositionX, map.initialEnemyPositionY, "Goblin");
             runner = new Enemy(1, 2, map.initialEnemyPositionX, map.initialEnemyPositionY, "Runner");
+            
             
                
         }
@@ -60,13 +61,14 @@ namespace FirstPlayable
             while (!player.gameOver)
             {
                 StartLevel();
-                map.DrawMap(player, goblin, boss, runner);
+                map.DrawMap(player, goblin1, boss, runner);
                 DisplayHUD();
                 DisplayLegend();
                 PlayerInput();
-                goblin.EnemyMovement(player.positionX, player.positionY, map.mapWidth, map.mapHeight, map.layout, player);
+                goblin1.EnemyMovement(player.positionX, player.positionY, map.mapWidth, map.mapHeight, map.layout, player);
                 boss.EnemyMovement(player.positionX, player.positionY, map.mapWidth, map.mapHeight, map.layout, player);
                 runner.RunnerMovement(player.positionX, player.positionY, map.mapWidth, map.mapHeight, map.layout, player);
+                
 
             }
 
@@ -129,7 +131,7 @@ namespace FirstPlayable
 
         private void PlayerInput()
         {
-            player.PlayerInput(map, goblin, boss, runner);
+            player.PlayerInput(map, goblin1, boss, runner);
         }
 
         private void DisplayLiveLog(List<string> liveLog)
