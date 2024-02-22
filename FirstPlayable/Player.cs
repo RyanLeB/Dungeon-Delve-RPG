@@ -21,6 +21,8 @@ namespace FirstPlayable
         public bool gameOver { get; set; }
         public bool levelComplete { get; set; }
 
+        public Enemy currentEnemy { get; set; }
+
         // Log list
         private List<string> liveLog;
 
@@ -51,12 +53,7 @@ namespace FirstPlayable
 
             playerController = Console.ReadKey(true);
 
-            if (moved == false && playerController.Key == ConsoleKey.Spacebar)
-            {
-                AttackEnemy(enemy);
-                moved = true;
-                return;
-            }
+            
 
             // moves up
             if (playerController.Key == ConsoleKey.UpArrow || playerController.Key == ConsoleKey.W)
@@ -86,41 +83,7 @@ namespace FirstPlayable
                 HandleMovement(map, enemy, boss, runner, ref moved, ref newPlayerPositionX, ref newPlayerPositionY, movementX, movementY);
             }
 
-            // winning door
-            if (map.layout[positionY, positionX] == '%')
-            {
-                youWin = true;
-                gameOver = true;
-            }
-
-            // collectable seeds
-            if (map.layout[positionY, positionX] == '&')
-            {
-                currentSeeds += 1;
-                map.layout[positionY, positionX] = '~';
-                Console.ForegroundColor = ConsoleColor.Green;
-                UpdateLiveLog("Picked up a seed (&)");
-
-                return;
-            }
-
-            if (map.layout[positionY, positionX] == '+')
-            {
-                healthSystem.Heal(1);
-                map.layout[positionY, positionX] = '~';
-                UpdateLiveLog("Picked up a health pack! (+)");
-
-                return;
-            }
-
-            if (map.layout[positionY, positionX] == '?')
-            {
-                playerDamage += 1;
-                map.layout[positionY, positionX] = '~';
-                UpdateLiveLog("Picked up damage boost +1 (?)");
-
-                return;
-            }
+            
 
             // exit game
             if (playerController.Key == ConsoleKey.Escape)
@@ -130,37 +93,40 @@ namespace FirstPlayable
         }
 
         // handles things like collision checks and what the player is moving towards
-        private void HandleMovement(Map map, Enemy enemy, Enemy boss, Enemy runner, ref bool moved, ref int newPlayerPositionX, ref int newPlayerPositionY, int movementX, int movementY)
+        private void HandleMovement(Map map, Enemy goblin, Enemy boss, Enemy runner, ref bool moved, ref int newPlayerPositionX, ref int newPlayerPositionY, int movementX, int movementY)
         {
             if (moved == false && map.layout[movementY, movementX] != '#')
             {
-                if (movementY == enemy.positionY && movementX == enemy.positionX)
+                if (movementY == goblin.positionY && movementX == goblin.positionX)
                 {
-                    enemy.healthSystem.Damage(playerDamage);
-                    healthSystem.Damage(1);
+                    currentEnemy = goblin;
+                    goblin.healthSystem.Damage(playerDamage);
                     UpdateLiveLog($"Dealt {playerDamage} damage to Goblin");
-                    UpdateLiveLog("Took Damage!");
                     if (healthSystem.IsDead())
                     {
                         gameOver = true;
                     }
-                    if (enemy.healthSystem.IsDead())
+                    if (goblin.healthSystem.IsDead())
                     {
-                        enemy.positionX = 0;
-                        enemy.positionY = 0;
-                        enemy.enemyAlive = false;
+                        goblin.positionX = 0;
+                        goblin.positionY = 0;
+                        goblin.enemyAlive = false;
+                        UpdateLiveLog("You Killed The Goblin And gained +1 Damage Boost!");
+                        playerDamage += 1;
                     }
                     return;
                 }
                 if (movementY == boss.positionY && movementX == boss.positionX)
                 {
+                    currentEnemy = boss;
                     boss.healthSystem.Damage(playerDamage);
-                    healthSystem.Damage(1);
+                    healthSystem.Damage(2);
                     UpdateLiveLog($"Dealt {playerDamage} damage to the Boss");
-                    UpdateLiveLog("Took Damage!");
+                    UpdateLiveLog("The Boss hit you back for 2 Damage!");
                     if (healthSystem.IsDead())
                     {
                         gameOver = true;
+                        
                     }
 
                     if (boss.healthSystem.IsDead())
@@ -168,19 +134,22 @@ namespace FirstPlayable
                         boss.positionX = 0;
                         boss.positionY = 0;
                         boss.enemyAlive = false;
+                        UpdateLiveLog("You Killed The Boss and Received +2 Seeds");
+                        currentSeeds += 2;
                     }
                     return;
                 }
                 
                 if (movementY == runner.positionY && movementX == runner.positionX)
                 {
+                    currentEnemy = runner;
                     runner.healthSystem.Damage(playerDamage);
-                    healthSystem.Damage(1);
                     UpdateLiveLog($"Dealt {playerDamage} damage to Runner");
-                    UpdateLiveLog("Took Damage!");
+                    
                     if (healthSystem.IsDead())
                     {
                         gameOver = true;
+                        
                     }
 
                     if (runner.healthSystem.IsDead())
@@ -188,6 +157,8 @@ namespace FirstPlayable
                         runner.positionX = 0;
                         runner.positionY = 0;
                         runner.enemyAlive = false;
+                        UpdateLiveLog("You Killed The Runner And gained +2 health packs!");
+                        healthSystem.Heal(2);
                     }
                     return;
                 }
@@ -195,13 +166,53 @@ namespace FirstPlayable
                 if (map.layout[movementY, movementX] == '^')
                 {
                     healthSystem.Damage(1);
+                    UpdateLiveLog("You Hit a Spike! -1 Health");
                     if (healthSystem.IsDead())
                     {
                         gameOver = true;
                     }
                 }
 
-               
+                // winning door
+                if (map.layout[movementY, movementX] == '%')
+                {
+                    youWin = true;
+                    gameOver = true;
+                }
+
+                // collectable seeds
+                if (map.layout[movementY, movementX] == '&')
+                {
+                    currentSeeds += 1;
+                    map.layout[movementY, movementX] = '~';
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    UpdateLiveLog("Picked up a seed (&)");
+                    return;
+
+
+                }
+
+                if (map.layout[movementY, movementX] == '+')
+                {
+                    healthSystem.Heal(1);
+                    map.layout[movementY, movementX] = '~';
+                    UpdateLiveLog("Picked up a health pack! (+)");
+                    return;
+
+
+                }
+
+                if (map.layout[movementY, movementX] == '?')
+                {
+                    playerDamage += 1;
+                    map.layout[movementY, movementX] = '~';
+                    UpdateLiveLog("Picked up damage boost +1 (?)");
+                    return;
+
+
+                }
+
+                
 
                 if (map.layout[movementY, movementX] == 'E')
                 {

@@ -86,7 +86,7 @@ namespace FirstPlayable
                         case '!':
                             Console.ForegroundColor = ConsoleColor.Green;
                             break;
-                        case 'E':
+                        case 'G':
                             Console.ForegroundColor = ConsoleColor.Red; 
                             break;
                         case 'B':

@@ -16,22 +16,25 @@ namespace FirstPlayable
         public int positionY { get; set; }
         public bool enemyAlive { get; set; }
 
-        public Enemy(int maxHealth, int damage, int startX, int startY)
+        public string Name { get; set; }
+        public Enemy(int maxHealth, int damage, int startX, int startY, string name)
         {
             healthSystem = new HealthSystem(maxHealth);
             enemyDamage = damage;
             positionX = startX;
             positionY = startY;
             enemyAlive = true;
+            Name = name;
         }
 
-        public Enemy(int maxHealth, int damage, int startX, int startY, bool isAlive)
+        public Enemy(int maxHealth, int damage, int startX, int startY, bool isAlive, string name)
         {
             healthSystem = new HealthSystem(maxHealth);
             enemyDamage = damage;
             positionX = startX;
             positionY = startY;
             enemyAlive = isAlive;
+            Name = name;
         }
 
         
@@ -175,7 +178,7 @@ namespace FirstPlayable
         {
             Console.SetCursorPosition(positionX, positionY);
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write("E");
+            Console.Write("G");
             Console.ResetColor();
         }
         }
