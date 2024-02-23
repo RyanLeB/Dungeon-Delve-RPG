@@ -26,7 +26,7 @@ namespace FirstPlayable
     {
         map = new Map("RPGMap.txt");
         player = new Player(10,10, 1, map.initialPlayerPositionX, map.initialPlayerPositionY);
-        boss = new Enemy(5, 2, 8, 8, true, "Boss");
+        boss = new Enemy(12, 2, 8, 8, true, "Boss");
         goblin1 = new Enemy(3, 0, map.initialEnemyPositionX, map.initialEnemyPositionY, "Goblin");
         runner = new Enemy(1, 2, map.initialEnemyPositionX, map.initialEnemyPositionY, "Runner");
 
@@ -55,6 +55,8 @@ namespace FirstPlayable
         Console.WriteLine("Runners chase you and hit you when they move into you!");
         Console.WriteLine("---------------------------------------------------------------------------------------------");
         Console.WriteLine("The Boss hits you back whenever you hit him");
+        Console.WriteLine("---------------------------------------------------------------------------------------------");
+        Console.WriteLine("Enemies can drop valuables, so try not to skip them!");
         Console.WriteLine("---------------------------------------------------------------------------------------------");
                 
             
@@ -88,7 +90,7 @@ namespace FirstPlayable
             {
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("You win!");
-                Console.WriteLine($"\nYou collected: {player.currentSeeds} Seeds!");
+                Console.WriteLine($"\nYou collected: {player.currentSeeds} / 14 Seeds!");
                 Console.WriteLine("Try to get more if you haven't got them all");
                 Console.WriteLine("-------------------------------------------");
                 Console.WriteLine("-------------------------------------------");
@@ -104,7 +106,7 @@ namespace FirstPlayable
             int centerX = (Console.WindowWidth - "You died...".Length) / 2;
             Console.SetCursorPosition(centerX, Console.CursorTop);
             Console.WriteLine("You died...");
-            Console.WriteLine("Try again");
+            
             Console.ReadKey(true);
         }
     }
@@ -123,7 +125,7 @@ namespace FirstPlayable
     private void DisplayLegend()
     {
         Console.SetCursorPosition(0, map.mapHeight + 2);
-        Console.WriteLine($"\nPlayer Damage: {player.playerDamage}");
+        Console.WriteLine($"\nPlayer Damage Level: {player.playerDamage}");
     }
 
     private void StartLevel()
