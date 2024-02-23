@@ -40,6 +40,7 @@ namespace FirstPlayable
          // Start up
     public void Start()
     {
+        Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine("Welcome to Dungeon Delve");
         Console.WriteLine("-------------------------------");
         Console.WriteLine("\nYour goal is to collect seeds '&' around a dungeon map while avoiding or defeating the enemies.");
@@ -64,12 +65,13 @@ namespace FirstPlayable
         Console.WriteLine("Press any key to start...");
         Console.ReadKey(true);
         Console.Clear();
+        Console.ResetColor();
 
             
 
 
             // game loop keeps on as long as the game isn't over or you haven't won   
-        while (!player.gameOver)
+        while (!player.gameOver)    
         {
             StartLevel();
             map.DrawMap(player, goblin1, boss, runner);
