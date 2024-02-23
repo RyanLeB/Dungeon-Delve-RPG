@@ -73,6 +73,7 @@ namespace FirstPlayable
             // game loop keeps on as long as the game isn't over or you haven't won   
         while (!player.gameOver)    
         {
+            Console.CursorVisible = false;
             StartLevel();
             map.DrawMap(player, goblin1, boss, runner);
             DisplayHUD();
