@@ -264,7 +264,7 @@ namespace FirstPlayable
         }
 
         // draws the player "!"
-        public void DrawPlayer()
+        public void Draw()
         {
             Console.SetCursorPosition(positionX, positionY);
             Console.ForegroundColor = ConsoleColor.Green;

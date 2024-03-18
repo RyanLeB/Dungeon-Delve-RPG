@@ -29,10 +29,11 @@ namespace FirstPlayable
         boss = new Enemy(12, 2, 8, 8, true, "Boss");
         goblin1 = new Enemy(3, 0, map.initialEnemyPositionX, map.initialEnemyPositionY, "Goblin");
         runner = new Enemy(1, 2, map.initialEnemyPositionX, map.initialEnemyPositionY, "Runner");
-
+        
+    }
+      
         
 
-    }
             
 
 

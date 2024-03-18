@@ -141,7 +141,7 @@ namespace FirstPlayable
                 Console.WriteLine();
             }
 
-            player.DrawPlayer();
+            player.Draw();
             goblin.DrawGoblin();
            
             boss.DrawBoss();
