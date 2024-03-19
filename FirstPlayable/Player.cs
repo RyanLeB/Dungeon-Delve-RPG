@@ -100,6 +100,9 @@ namespace FirstPlayable
         {
             if (moved == false && map.layout[movementY, movementX] != '#')
             {
+                
+                // Goblin
+
                 if (movementY == goblin.positionY && movementX == goblin.positionX)
                 {
                     currentEnemy = goblin;
@@ -111,21 +114,33 @@ namespace FirstPlayable
                     }
                     if (goblin.healthSystem.IsDead())
                     {
+
+                        Console.SetCursorPosition(goblin.positionX, goblin.positionY);
+                        Console.BackgroundColor = ConsoleColor.DarkGray;
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.Write('-');
+                        
                         goblin.positionX = 0;
                         goblin.positionY = 0;
+
                         goblin.enemyAlive = false;
-                        UpdateLiveLog("You Killed The Goblin And gained +1 Damage Boost!");
+                        UpdateLiveLog("You Killed The Goblin");
+                        UpdateLiveLog("+1 Damage Gained");
                         playerDamage += 1;
                     }
                     return;
                 }
+                
+
+                // Boss
+                
                 if (movementY == boss.positionY && movementX == boss.positionX)
                 {
                     currentEnemy = boss;
                     boss.healthSystem.Damage(playerDamage);
                     healthSystem.Damage(2);
                     UpdateLiveLog($"Dealt {playerDamage} damage to the Boss");
-                    UpdateLiveLog("The Boss hit you back for 2 Damage!");
+                    UpdateLiveLog("Boss Deals -2 Damage");
                     if (healthSystem.IsDead())
                     {
                         gameOver = true;
@@ -134,14 +149,25 @@ namespace FirstPlayable
 
                     if (boss.healthSystem.IsDead())
                     {
+
+                        Console.SetCursorPosition(boss.positionX, boss.positionY);
+                        Console.BackgroundColor = ConsoleColor.DarkGray;
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.Write('-');
+
+
                         boss.positionX = 0;
                         boss.positionY = 0;
                         boss.enemyAlive = false;
-                        UpdateLiveLog("You Killed The Boss and Received +2 Seeds");
+                        UpdateLiveLog("You Killed The Boss!");
+                        UpdateLiveLog("Received +2 Seeds");
                         currentSeeds += 2;
                     }
                     return;
                 }
+                
+                
+                // Runner
                 
                 if (movementY == runner.positionY && movementX == runner.positionX)
                 {
@@ -157,19 +183,27 @@ namespace FirstPlayable
 
                     if (runner.healthSystem.IsDead())
                     {
+                        Console.SetCursorPosition(runner.positionX, runner.positionY);
+                        Console.BackgroundColor = ConsoleColor.DarkGray;
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.Write('-');
+
                         runner.positionX = 0;
                         runner.positionY = 0;
                         runner.enemyAlive = false;
-                        UpdateLiveLog("You Killed The Runner And gained +2 health packs!");
+                        UpdateLiveLog("You Killed The Runner");
+                        UpdateLiveLog("Healed +2 health");
                         healthSystem.Heal(2);
                     }
                     return;
                 }
 
+                // Spikes
+                
                 if (map.layout[movementY, movementX] == '^')
                 {
                     healthSystem.Damage(1);
-                    UpdateLiveLog("You Hit a Spike! -1 Health");
+                    UpdateLiveLog("-1 Health");
                     if (healthSystem.IsDead())
                     {
                         gameOver = true;
@@ -189,7 +223,7 @@ namespace FirstPlayable
                     currentSeeds += 1;
                     map.layout[movementY, movementX] = '-';
                     Console.ForegroundColor = ConsoleColor.Gray;
-                    UpdateLiveLog("Picked up a seed (&)");
+                    UpdateLiveLog("Picked up a seed!");
                     
 
 
@@ -218,18 +252,19 @@ namespace FirstPlayable
                     healthSystem.Heal(1);
                     map.layout[movementY, movementX] = '-';
                     Console.ForegroundColor = ConsoleColor.Gray;
-                    UpdateLiveLog("Picked up a health pack! (+)");
+                    UpdateLiveLog("Gained Health!");
+                    
                     Console.SetCursorPosition(positionX, positionY);
-                    
-                    
-                    Console.BackgroundColor = ConsoleColor.DarkGray; 
-                    Console.Write(currentTile);
 
+
+                    
+                    Console.BackgroundColor = ConsoleColor.DarkGray; // Set the background color to dark gray
+                    Console.Write(currentTile);
+                    currentTile = map.layout[movementY, movementX];
                     positionY = movementY;
                     positionX = movementX;
                     moved = true;
 
-                    
                     return;
 
 
@@ -241,17 +276,17 @@ namespace FirstPlayable
                     playerDamage += 1;
                     map.layout[movementY, movementX] = '-';
                     Console.ForegroundColor = ConsoleColor.Gray;
-                    UpdateLiveLog("Picked up damage boost +1 (?)");
+                    UpdateLiveLog("Damage increased!");
                     Console.SetCursorPosition(positionX, positionY);
 
 
-                    Console.BackgroundColor = ConsoleColor.DarkGray;
+                    
+                    Console.BackgroundColor = ConsoleColor.DarkGray; // Set the background color to dark gray
                     Console.Write(currentTile);
-
+                    currentTile = map.layout[movementY, movementX];
                     positionY = movementY;
                     positionX = movementX;
                     moved = true;
-
 
                     return;
 
@@ -314,6 +349,9 @@ namespace FirstPlayable
                 }
             }
         }
+
+        // Picked up a seed (&)Health(?)
+        // You Hit a Spike! -1 Health(?)
 
         // draws the player "!"
         public void Draw()

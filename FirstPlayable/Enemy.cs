@@ -219,10 +219,13 @@ namespace FirstPlayable
             if (!enemyAlive)
             {
                 // Update the map layout and the console when the enemy dies
-                mapLayout[positionY, positionX] = currentTile;
+                mapLayout[positionY, positionX] = '-';
+                Console.ForegroundColor = ConsoleColor.Gray;
                 Console.SetCursorPosition(positionX, positionY);
                 Console.BackgroundColor = ConsoleColor.DarkGray; // Set the background color to dark gray
                 Console.Write(currentTile);
+
+                
             }
 
         }
