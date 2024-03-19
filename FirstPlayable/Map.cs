@@ -14,7 +14,7 @@ namespace FirstPlayable
         private string path;
         private string[] floor;
         public char[,] layout;
-
+        private bool mapDrawn = false;
         public int mapWidth { get; set; }
         public int mapHeight { get; set; }
         public int initialPlayerPositionX { get; set; }
@@ -60,93 +60,97 @@ namespace FirstPlayable
         // draws out map on screen
         public void DrawMap(Player player, Enemy goblin, Enemy boss, Enemy runner)
         {
+            if (!mapDrawn)
+            { 
             Console.Clear();
 
             Console.BackgroundColor = ConsoleColor.DarkGray;
 
-            for (int k = 0; k < mapHeight; k++)
-            {
-                for (int l = 0; l < mapWidth; l++)
+                for (int k = 0; k < mapHeight; k++)
                 {
-                    char tile = layout[k, l];
-                    switch (tile)
+                    for (int l = 0; l < mapWidth; l++)
                     {
-                        case '=':
-                            Console.ForegroundColor = ConsoleColor.Yellow; 
-                            break;
-                        case '-':
-                            Console.ForegroundColor = ConsoleColor.Gray; 
-                            break;
-                        case '&':
-                            Console.ForegroundColor = ConsoleColor.Cyan; 
-                            break;
-                        case '^':
-                            Console.ForegroundColor = ConsoleColor.Gray; 
-                            break;
-                        case '!':
-                            Console.ForegroundColor = ConsoleColor.Green;
-                            break;
-                        case 'G':
-                            Console.ForegroundColor = ConsoleColor.Red; 
-                            break;
-                        case 'B':
-                            Console.ForegroundColor = ConsoleColor.Magenta; 
-                            break;
-                        case '#':
-                            Console.ForegroundColor = ConsoleColor.Gray; 
-                            break;
-                        case '%':
-                            Console.ForegroundColor = ConsoleColor.Yellow; 
-                            break;
-                        case '+':
-                            Console.ForegroundColor = ConsoleColor.DarkGreen; 
-                            break;
-                        case '?':
-                            Console.ForegroundColor = ConsoleColor.DarkMagenta; 
-                            break;
-                        default:
-                            Console.ForegroundColor = ConsoleColor.Gray; 
-                            break;
-                    }
+                        char tile = layout[k, l];
+                        switch (tile)
+                        {
+                            case '=':
+                                Console.ForegroundColor = ConsoleColor.Yellow;
+                                break;
+                            case '-':
+                                Console.ForegroundColor = ConsoleColor.Gray;
+                                break;
+                            case '&':
+                                Console.ForegroundColor = ConsoleColor.Cyan;
+                                break;
+                            case '^':
+                                Console.ForegroundColor = ConsoleColor.Gray;
+                                break;
+                            case '!':
+                                Console.ForegroundColor = ConsoleColor.Green;
+                                break;
+                            case 'G':
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                break;
+                            case 'B':
+                                Console.ForegroundColor = ConsoleColor.Magenta;
+                                break;
+                            case '#':
+                                Console.ForegroundColor = ConsoleColor.Gray;
+                                break;
+                            case '%':
+                                Console.ForegroundColor = ConsoleColor.Yellow;
+                                break;
+                            case '+':
+                                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                                break;
+                            case '?':
+                                Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                                break;
+                            default:
+                                Console.ForegroundColor = ConsoleColor.Gray;
+                                break;
+                        }
 
 
-                    if (tile == '=' && !player.levelComplete)
-                    {
-                        player.positionX = l;
-                        player.positionY = k - 1;
-                        player.levelComplete = true;
-                        layout[k, l] = '#';
-                    }
+                        if (tile == '=' && !player.levelComplete)
+                        {
+                            player.positionX = l;
+                            player.positionY = k - 1;
+                            player.levelComplete = true;
+                            layout[k, l] = '-';
+                        }
 
-                    if (tile == '*' && !player.levelComplete)
-                    {
-                        goblin.positionX = l;
-                        goblin.positionY = k;
-                        layout[k, l] = '-';
+                        if (tile == '*' && !player.levelComplete)
+                        {
+                            goblin.positionX = l;
+                            goblin.positionY = k;
+                            layout[k, l] = '-';
+                        }
+                        if (tile == '@' && !player.levelComplete)
+                        {
+                            boss.positionX = l;
+                            boss.positionY = k;
+                            layout[k, l] = '-';
+                        }
+                        if (tile == '_' && !player.levelComplete)
+                        {
+                            runner.positionX = l;
+                            runner.positionY = k;
+                            layout[k, l] = '-';
+                        }
+                        Console.Write(tile);
                     }
-                    if (tile == '@' && !player.levelComplete)
-                    {
-                        boss.positionX = l;
-                        boss.positionY = k;
-                        layout[k, l] = '-';
-                    }
-                    if (tile == '_' && !player.levelComplete)
-                    {
-                        runner.positionX = l;
-                        runner.positionY = k;
-                        layout[k, l] = '-';
-                    }
-                    Console.Write(tile);
+                    Console.WriteLine();
+                    mapDrawn = true;
                 }
-                Console.WriteLine();
             }
 
             player.Draw();
             goblin.DrawGoblin();
-           
             boss.DrawBoss();
             runner.DrawRunner();
             Console.SetCursorPosition(0, 0);
+           
             
         }
 

@@ -25,11 +25,11 @@ namespace FirstPlayable
     public GameManager()
     {
         map = new Map("RPGMap.txt");
-        player = new Player(10,10, 1, map.initialPlayerPositionX, map.initialPlayerPositionY);
-        boss = new Enemy(12, 2, 8, 8, true, "Boss");
-        goblin1 = new Enemy(3, 0, map.initialEnemyPositionX, map.initialEnemyPositionY, "Goblin");
-        runner = new Enemy(1, 2, map.initialEnemyPositionX, map.initialEnemyPositionY, "Runner");
-        
+        player = new Player(10, 10, 1, map.initialPlayerPositionX, map.initialPlayerPositionY, map.layout);
+        boss = new Enemy(12, 2, 8, 8, true, "Boss", map.layout);
+        goblin1 = new Enemy(3, 0, map.initialEnemyPositionX, map.initialEnemyPositionY, "Goblin", map.layout);
+        runner = new Enemy(1, 2, map.initialEnemyPositionX, map.initialEnemyPositionY, "Runner", map.layout);
+
     }
       
         

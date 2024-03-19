@@ -16,24 +16,28 @@ namespace FirstPlayable
         public int positionY { get; set; }
         public bool enemyAlive { get; set; }
 
+        private char currentTile;  
+
         public string Name { get; set; }
         
-        public Enemy(int maxHealth, int damage, int startX, int startY, string name)
+        public Enemy(int maxHealth, int damage, int startX, int startY, string name, char[,] mapLayout)
         {
             healthSystem = new HealthSystem(maxHealth);
             enemyDamage = damage;
             positionX = startX;
             positionY = startY;
+            currentTile = mapLayout[startY, startX];
             enemyAlive = true;
             Name = name;
         }
 
-        public Enemy(int maxHealth, int damage, int startX, int startY, bool isAlive, string name)
+        public Enemy(int maxHealth, int damage, int startX, int startY, bool isAlive, string name, char[,] mapLayout)
         {
             healthSystem = new HealthSystem(maxHealth);
             enemyDamage = damage;
             positionX = startX;
             positionY = startY;
+            currentTile = mapLayout[startY, startX];
             enemyAlive = isAlive;
             Name = name;
         }
@@ -97,7 +101,22 @@ namespace FirstPlayable
                     }
                 }
 
-                
+                if (mapLayout[newEnemyPositionY, newEnemyPositionX] != '#')
+                {
+                    
+                    Console.SetCursorPosition(positionX, positionY);
+                    Console.BackgroundColor = ConsoleColor.DarkGray;
+                    Console.Write(currentTile);
+
+                    
+                    positionX = newEnemyPositionX;
+                    positionY = newEnemyPositionY;
+
+                    
+                    currentTile = mapLayout[newEnemyPositionY, newEnemyPositionX];
+                }
+
+
                 if (enemyMovementX == playerX && enemyMovementY == playerY)
                 {
                     player.healthSystem.Damage(enemyDamage);
@@ -112,7 +131,7 @@ namespace FirstPlayable
 
                 // Updates the enemies position
                 positionY = enemyMovementY;
-            positionX = enemyMovementX;
+                positionX = enemyMovementX;
         }
 
 
@@ -121,8 +140,25 @@ namespace FirstPlayable
         {
             int enemyMovementX = positionX;
             int enemyMovementY = positionY;
+            int newEnemyPositionX = positionX;
+            int newEnemyPositionY = positionY;
 
-            
+            if (mapLayout[newEnemyPositionY, newEnemyPositionX] != '#')
+            {
+                
+                Console.SetCursorPosition(positionX, positionY);
+                Console.BackgroundColor = ConsoleColor.DarkGray;
+                Console.Write(currentTile);
+
+                
+                positionX = newEnemyPositionX;
+                positionY = newEnemyPositionY;
+
+                
+                currentTile = mapLayout[newEnemyPositionY, newEnemyPositionX];
+            }
+
+
             int distanceX = Math.Abs(playerX - positionX);
             int distanceY = Math.Abs(playerY - positionY);
 

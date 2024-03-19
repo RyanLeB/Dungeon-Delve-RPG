@@ -21,18 +21,21 @@ namespace FirstPlayable
         public bool gameOver { get; set; }
         public bool levelComplete { get; set; }
 
+        private char currentTile;
+
         public Enemy currentEnemy { get; set; }
 
         // Log list
         private List<string> liveLog;
 
-        public Player(int maxHealth, int health, int damage, int startX, int startY)
+        public Player(int maxHealth, int health, int damage, int startX, int startY, char[,] mapLayout)
         {
             healthSystem = new HealthSystem(maxHealth);
             healthSystem.Heal(health);
             playerDamage = damage;
             positionX = startX;
             positionY = startY;
+            currentTile = mapLayout[startY, startX];
             liveLog = new List<string>();
         }
 
@@ -184,23 +187,51 @@ namespace FirstPlayable
                 if (map.layout[movementY, movementX] == '&')
                 {
                     currentSeeds += 1;
-                    map.layout[movementY, movementX] = '~';
-                    Console.ForegroundColor = ConsoleColor.Green;
+                    map.layout[movementY, movementX] = '-';
+                    Console.ForegroundColor = ConsoleColor.Gray;
                     UpdateLiveLog("Picked up a seed (&)");
                     
+
+
+                    // Replace the old position with the current tile
+                    Console.SetCursorPosition(positionX, positionY);
+                    Console.BackgroundColor = ConsoleColor.DarkGray; // Set the background color to dark gray
+                    Console.Write(currentTile);
+
+                    positionY = movementY;
+                    positionX = movementX;
+                    moved = true;
+
                     return;
+                    
                 }
-                
-                
+
+                    
+
+
+
 
 
 
                 if (map.layout[movementY, movementX] == '+')
                 {
                     healthSystem.Heal(1);
-                    map.layout[movementY, movementX] = '~';
+                    map.layout[movementY, movementX] = '-';
+                    Console.ForegroundColor = ConsoleColor.Gray;
                     UpdateLiveLog("Picked up a health pack! (+)");
+                    Console.SetCursorPosition(positionX, positionY);
+                    
+                    
+                    Console.BackgroundColor = ConsoleColor.DarkGray; 
+                    Console.Write(currentTile);
+
+                    positionY = movementY;
+                    positionX = movementX;
+                    moved = true;
+
+                    
                     return;
+
 
 
                 }
@@ -208,14 +239,27 @@ namespace FirstPlayable
                 if (map.layout[movementY, movementX] == '?')
                 {
                     playerDamage += 1;
-                    map.layout[movementY, movementX] = '~';
+                    map.layout[movementY, movementX] = '-';
+                    Console.ForegroundColor = ConsoleColor.Gray;
                     UpdateLiveLog("Picked up damage boost +1 (?)");
+                    Console.SetCursorPosition(positionX, positionY);
+
+
+                    Console.BackgroundColor = ConsoleColor.DarkGray;
+                    Console.Write(currentTile);
+
+                    positionY = movementY;
+                    positionX = movementX;
+                    moved = true;
+
+
                     return;
+
 
 
                 }
 
-                
+
 
                 if (map.layout[movementY, movementX] == 'E')
                 {
@@ -227,9 +271,17 @@ namespace FirstPlayable
 
                 else
                 {
-                    moved = true;
+                    Console.SetCursorPosition(positionX, positionY);
+                    Console.BackgroundColor = ConsoleColor.DarkGray;
+                    Console.Write(currentTile);
+
+
                     positionY = movementY;
                     positionX = movementX;
+
+                    currentTile = map.layout[movementY, movementX];
+
+                    moved = true;
                 }
             }
         }
