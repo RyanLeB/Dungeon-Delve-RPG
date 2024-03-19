@@ -132,6 +132,17 @@ namespace FirstPlayable
                 // Updates the enemies position
                 positionY = enemyMovementY;
                 positionX = enemyMovementX;
+
+            if (!enemyAlive)
+            {
+                // Update the map layout and the console when the enemy dies
+                mapLayout[positionY, positionX] = currentTile;
+                
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.SetCursorPosition(positionX, positionY);
+                Console.BackgroundColor = ConsoleColor.DarkGray; // Set the background color to dark gray
+                Console.Write(currentTile);
+            }
         }
 
 
@@ -205,6 +216,15 @@ namespace FirstPlayable
                 positionY = enemyMovementY;
                 positionX = enemyMovementX;
             }
+            if (!enemyAlive)
+            {
+                // Update the map layout and the console when the enemy dies
+                mapLayout[positionY, positionX] = currentTile;
+                Console.SetCursorPosition(positionX, positionY);
+                Console.BackgroundColor = ConsoleColor.DarkGray; // Set the background color to dark gray
+                Console.Write(currentTile);
+            }
+
         }
 
 
@@ -218,7 +238,7 @@ namespace FirstPlayable
             Console.Write("G");
             Console.ResetColor();
         }
-        }
+    }
 
         public void DrawBoss()
         {

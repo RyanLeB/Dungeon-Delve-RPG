@@ -197,7 +197,7 @@ namespace FirstPlayable
                     Console.SetCursorPosition(positionX, positionY);
                     Console.BackgroundColor = ConsoleColor.DarkGray; // Set the background color to dark gray
                     Console.Write(currentTile);
-
+                    currentTile = map.layout[movementY, movementX];
                     positionY = movementY;
                     positionX = movementX;
                     moved = true;
