@@ -43,13 +43,14 @@ namespace FirstPlayable
                 {
                     layout[i, j] = floor[i][j];
 
-                    if (layout[i, j] == '!')
+                    if (layout[i, j] == '-')
                     {
                         initialPlayerPositionX = j;
                         initialPlayerPositionY = i;
                     }
-                    else if (layout[i, j] == 'E')
+                    else if (layout[i, j] == '*')
                     {
+                        layout[i, j] = '-';
                         initialEnemyPositionX = j;
                         initialEnemyPositionY = i;
                     }

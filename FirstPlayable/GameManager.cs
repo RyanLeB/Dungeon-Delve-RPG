@@ -18,11 +18,11 @@ namespace FirstPlayable
     private Enemy goblin1;
     private Enemy boss;
     private Enemy runner;
-        
-    
+
+    private List<Enemy> enemies = new List<Enemy>();
 
 
-    public GameManager()
+        public GameManager()
     {
         map = new Map("RPGMap.txt");
         player = new Player(10, 10, 1, map.initialPlayerPositionX, map.initialPlayerPositionY, map.layout);
@@ -92,7 +92,7 @@ namespace FirstPlayable
             // player wins
             if (player.youWin)
             {
-                Console.ForegroundColor = ConsoleColor.Green;
+                Console.ForegroundColor = ConsoleColor.Black;
                 Console.WriteLine("You win!");
                 Console.WriteLine($"\nYou collected: {player.currentSeeds} / 14 Seeds!");
                 Console.WriteLine("Try to get more if you haven't got them all");
@@ -142,7 +142,7 @@ namespace FirstPlayable
         levelTimer.Stop(); // Timer stops at the end
         TimeSpan elapsedTime = levelTimer.Elapsed;
 
-            
+        
         string elapsedTimeString = String.Format("{0:00}:{1:00}:{2:00}", elapsedTime.Hours, elapsedTime.Minutes, elapsedTime.Seconds);
         Console.WriteLine($"Level completed in: {elapsedTimeString}");
     }
