@@ -12,21 +12,33 @@ namespace FirstPlayable
     {
         // variables | encapsulation
         
+
+        // Health System
         public HealthSystem healthSystem;
         public int playerDamage { get; set; }
+       
+        // Player Position
         public int positionX { get; set; }
         public int positionY { get; set; }
+        
+        // Seeds
         public int currentSeeds { get; set; }
+        
+        // Game States
         public bool youWin { get; set; }
         public bool gameOver { get; set; }
         public bool levelComplete { get; set; }
 
         private char currentTile;
-
+        
+        // Enemy 
         public Enemy currentEnemy { get; set; }
 
         // Log list
         private List<string> liveLog;
+
+        // Item Manager
+        public ItemManager itemManager;
 
         public Player(int maxHealth, int health, int damage, int startX, int startY, char[,] mapLayout)
         {
@@ -36,11 +48,12 @@ namespace FirstPlayable
             positionX = startX;
             positionY = startY;
             currentTile = mapLayout[startY, startX];
+            itemManager = new ItemManager(this);
             liveLog = new List<string>();
         }
 
 
-        // recieves player input
+        // Receives player input
         public void PlayerInput(Map map, Enemy goblin, Enemy boss, Enemy runner)
         {
             ConsoleKeyInfo playerController;
@@ -220,10 +233,10 @@ namespace FirstPlayable
                 // collectable seeds
                 if (map.layout[movementY, movementX] == '&')
                 {
-                    currentSeeds += 1;
+                   
                     map.layout[movementY, movementX] = '-';
                     Console.ForegroundColor = ConsoleColor.Gray;
-                    UpdateLiveLog("Picked up a seed!");
+                    itemManager.UseItem("Seed");
                     
 
 
@@ -249,10 +262,10 @@ namespace FirstPlayable
 
                 if (map.layout[movementY, movementX] == '+')
                 {
-                    healthSystem.Heal(1);
+                    
                     map.layout[movementY, movementX] = '-';
                     Console.ForegroundColor = ConsoleColor.Gray;
-                    UpdateLiveLog("Gained Health!");
+                    itemManager.UseItem("HealthPotion");
                     
                     Console.SetCursorPosition(positionX, positionY);
 
@@ -273,10 +286,10 @@ namespace FirstPlayable
 
                 if (map.layout[movementY, movementX] == '?')
                 {
-                    playerDamage += 1;
+                    
                     map.layout[movementY, movementX] = '-';
                     Console.ForegroundColor = ConsoleColor.Gray;
-                    UpdateLiveLog("Damage increased!");
+                    itemManager.UseItem("DamageBoost");
                     Console.SetCursorPosition(positionX, positionY);
 
 
