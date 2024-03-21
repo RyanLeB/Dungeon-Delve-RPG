@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,27 +19,26 @@ namespace FirstPlayable
     private Enemy goblin1;
     private Enemy boss;
     private Enemy runner;
-
+    private Settings settings = new Settings();
     private List<Enemy> enemies = new List<Enemy>();
 
 
         public GameManager()
     {
-        map = new Map("RPGMap.txt");
-        player = new Player(10, 10, 1, map.initialPlayerPositionX, map.initialPlayerPositionY, map.layout);
-        boss = new Enemy(12, 2, 8, 8, true, "Boss", map.layout);
-        goblin1 = new Enemy(3, 0, map.initialEnemyPositionX, map.initialEnemyPositionY, "Goblin", map.layout);
-        runner = new Enemy(1, 2, map.initialEnemyPositionX, map.initialEnemyPositionY, "Runner", map.layout);
-
-    }
-      
-        
-
-            
+            map = new Map("RPGMap.txt");
+            player = new Player(settings.PlayerInitialHealth, settings.PlayerInitialDamage, settings.PlayerInitialLevel, map.initialPlayerPositionX, map.initialPlayerPositionY, map.layout);
+            boss = new Enemy(settings.BossInitialHealth, settings.BossInitialDamage, 8, 8, true, "Boss", map.layout);
+            goblin1 = new Enemy(settings.GoblinInitialHealth, settings.GoblinInitialDamage, map.initialEnemyPositionX, map.initialEnemyPositionY, "Goblin", map.layout);
+            runner = new Enemy(settings.RunnerInitialHealth, settings.RunnerInitialDamage, map.initialEnemyPositionX, map.initialEnemyPositionY, "Runner", map.layout);
+        }
 
 
-            
-         // Start up
+
+
+
+
+
+        // Start up
     public void Start()
     {
         Console.ForegroundColor = ConsoleColor.Green;
