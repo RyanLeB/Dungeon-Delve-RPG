@@ -22,8 +22,11 @@ namespace FirstPlayable
         public int initialEnemyPositionX { get; set; }
         public int initialEnemyPositionY { get; set; }
 
-        public Map(string mapFileName)
+        private List<Enemy> enemies;  
+
+        public Map(string mapFileName, List<Enemy> enemies)
         {
+            this.enemies = enemies;
             path = mapFileName;
             floor = File.ReadAllLines(path);
             CreateMap();
@@ -59,7 +62,7 @@ namespace FirstPlayable
         }
 
         // draws out map on screen
-        public void DrawMap(Player player, Enemy goblin, Enemy boss, Enemy runner)
+        public void DrawMap(Player player, Goblin goblin, Boss boss, Runner runner)
         {
             if (!mapDrawn)
             { 
@@ -139,17 +142,28 @@ namespace FirstPlayable
                             runner.positionY = k;
                             layout[k, l] = '-';
                         }
+                        
+
                         Console.Write(tile);
                     }
                     Console.WriteLine();
                     mapDrawn = true;
                 }
+                
+
             }
 
+            
             player.Draw();
-            goblin.DrawGoblin();
-            boss.DrawBoss();
-            runner.DrawRunner();
+
+            
+            foreach (var enemy in enemies)
+            {
+                enemy.Draw();
+            }
+            goblin.Draw();
+            boss.Draw();
+            runner.Draw();
             Console.SetCursorPosition(0, 0);
            
             

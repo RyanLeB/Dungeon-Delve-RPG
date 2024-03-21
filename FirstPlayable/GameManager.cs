@@ -16,20 +16,44 @@ namespace FirstPlayable
     private Stopwatch levelTimer = new Stopwatch();
     private Map map;
     private Player player;
-    private Enemy goblin1;
-    private Enemy boss;
-    private Enemy runner;
+    Boss boss;
+    Goblin goblin;
+    Runner runner;
     private Settings settings = new Settings();
     private List<Enemy> enemies = new List<Enemy>();
+    private HUD hud;
 
 
         public GameManager()
-    {
-            map = new Map("RPGMap.txt");
+        {
+            map = new Map("RPGMap.txt", enemies);
+            
             player = new Player(settings.PlayerInitialHealth, settings.PlayerInitialDamage, settings.PlayerInitialLevel, map.initialPlayerPositionX, map.initialPlayerPositionY, map.layout);
-            boss = new Enemy(settings.BossInitialHealth, settings.BossInitialDamage, 8, 8, true, "Boss", map.layout);
-            goblin1 = new Enemy(settings.GoblinInitialHealth, settings.GoblinInitialDamage, map.initialEnemyPositionX, map.initialEnemyPositionY, "Goblin", map.layout);
-            runner = new Enemy(settings.RunnerInitialHealth, settings.RunnerInitialDamage, map.initialEnemyPositionX, map.initialEnemyPositionY, "Runner", map.layout);
+
+            
+            hud = new HUD(player, map);
+            
+            
+            
+            for (int i = 0; i < 10; i++)
+            {
+                goblin = new Goblin(settings.GoblinInitialHealth, settings.GoblinInitialDamage + i, map.initialEnemyPositionX + i, map.initialEnemyPositionY, "Goblin", map.layout);
+                enemies.Add(goblin);
+            }
+
+            for (int i = 0; i < 1; i++)
+            {
+                boss = new Boss(settings.BossInitialHealth, settings.BossInitialDamage, map.initialEnemyPositionX, map.initialEnemyPositionY, "Boss", map.layout);
+                enemies.Add(boss);
+            }
+            
+            for (int i = 0; i < 1; i++)
+            {
+                runner = new Runner(settings.RunnerInitialHealth, settings.RunnerInitialDamage, map.initialEnemyPositionX, map.initialEnemyPositionY, "Runner", map.layout);
+                enemies.Add(runner);
+            }
+            
+            
         }
 
 
@@ -41,6 +65,9 @@ namespace FirstPlayable
         // Start up
     public void Start()
     {
+        
+            
+            
         Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine("Welcome to Dungeon Delve");
         Console.WriteLine("-------------------------------");
@@ -70,31 +97,36 @@ namespace FirstPlayable
 
             
 
+       
 
             // game loop keeps on as long as the game isn't over or you haven't won   
         while (!player.gameOver)    
         {
             Console.CursorVisible = false;
             StartLevel();
-            map.DrawMap(player, goblin1, boss, runner);
-            DisplayHUD();
-            DisplayLegend();
+            map.DrawMap(player, goblin, boss, runner);
+            hud.DisplayHUD();
+            
+            hud.DisplayLegend();
             PlayerInput();
-            goblin1.EnemyMovement(player.positionX, player.positionY, map.mapWidth, map.mapHeight, map.layout, player);
-            boss.EnemyMovement(player.positionX, player.positionY, map.mapWidth, map.mapHeight, map.layout, player);
-            runner.RunnerMovement(player.positionX, player.positionY, map.mapWidth, map.mapHeight, map.layout, player);
-                
+
+            foreach (var enemy in enemies)
+            {
+                enemy.Move(player.positionX, player.positionY, map.mapWidth, map.mapHeight, map.layout, player, enemies);
+            }
 
         }
 
-        Console.Clear();
+
+
+            Console.Clear();
 
             // player wins
             if (player.youWin)
             {
                 Console.ForegroundColor = ConsoleColor.Black;
                 Console.WriteLine("You win!");
-                Console.WriteLine($"\nYou collected: {player.currentSeeds} / 14 Seeds!");
+                Console.WriteLine($"\nYou collected: {player.currentSeeds} / 11 Seeds!");
                 Console.WriteLine("Try to get more if you haven't got them all");
                 Console.WriteLine("-------------------------------------------");
                 Console.WriteLine("-------------------------------------------");
@@ -115,22 +147,7 @@ namespace FirstPlayable
         }
     }
         // displays the HUD
-    private void DisplayHUD()
-    {
-        string currentEnemyInfo = player.currentEnemy != null ? $"{player.currentEnemy.Name} | HP Remaining: ({player.currentEnemy.healthSystem.GetCurrentHealth()}/{player.currentEnemy.healthSystem.GetMaximumHealth()})" : "None";
-        Console.SetCursorPosition(0, map.mapHeight + 1);
-        Console.WriteLine($"Player Health: {player.healthSystem.GetCurrentHealth()}/{player.healthSystem.GetMaximumHealth()} | Collected Seeds: {player.currentSeeds} | Attacking: {currentEnemyInfo}");
-        
-
-        RedrawLiveLog();
-    }
-
-    // displays the legend
-    private void DisplayLegend()
-    {
-        Console.SetCursorPosition(0, map.mapHeight + 2);
-        Console.WriteLine($"\nPlayer Damage Level: {player.playerDamage}");
-    }
+    
 
     private void StartLevel()
     {
@@ -150,60 +167,14 @@ namespace FirstPlayable
 
     private void PlayerInput()
     {
-        player.PlayerInput(map, goblin1, boss, runner);
-    }
-
-
-    
-
-
-        public void DisplayLiveLog(List<string> liveLog)
-    {
-        Console.SetCursorPosition(0, map.mapHeight + 7);
-
-        Console.WriteLine("Live Log:");
-
-        int logLimit = Math.Min(3, liveLog.Count); // Limits log to 3 most recent messages
-        int startIndex = liveLog.Count - logLimit; 
-
-        for (int i = liveLog.Count - 1; i >= startIndex; i--)
-        {
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.SetCursorPosition(0, Console.CursorTop);
-            Console.WriteLine(liveLog[i]);
-        }
-
-            
-            Console.ResetColor();
-    }
-
-        public void RedrawLiveLog()
-        {
-            
-            int startLine = map.mapHeight + 7;
-
-            List<string> liveLog = player.GetLiveLog();
-
-            
-            int startIndex = Math.Max(0, liveLog.Count - 3); 
-
-            
-            for (int i = 2; i >= 0; i--)
+        try
             {
-                Console.SetCursorPosition(0, startLine + i);
-                Console.Write(new string(' ', Console.WindowWidth));
+            player.PlayerInput(map, enemies);
+
             }
-
-            
-            for (int i = 2; i >= 0; i--)
+            catch (Exception ex)
             {
-                int index = startIndex + (2 - i);
-                if (index >= 0 && index < liveLog.Count)
-                {
-                    string message = liveLog[index];
-                    Console.SetCursorPosition(0, startLine + i);
-                    Console.WriteLine(message);
-                }
+                Console.WriteLine(ex.ToString());
             }
         }
     }
