@@ -6,39 +6,30 @@ namespace FirstPlayable
     internal class ItemManager
     {
         private Player player;
+
+
         
+        public Dictionary<string, Item> Items { get; set; }
 
         public ItemManager(Player player)
         {
             this.player = player;
-            
+            Items = new Dictionary<string, Item>
+        {
+            { "HealthPotion", new HealthPotion() },
+            { "DamageBoost", new DamageBoost() },
+            { "Seed", new Seed() }
+        };
         }
 
-       
 
-        public void UseItem(string item)
+
+        public void UseItem(string itemName)
         {
-            
-            switch (item)
+            if (Items.ContainsKey(itemName))
             {
-                case "HealthPotion":
-                    player.healthSystem.Heal(2);
-                    player.UpdateLiveLog("Gained +2 health");
-                break;
-                
-                case "DamageBoost":
-                    player.playerDamage += 1;
-                    player.UpdateLiveLog("Player Damage increased +1");
-                break;
-                
-                case "Seed":
-                    player.currentSeeds += 1;
-                    player.UpdateLiveLog("Picked up a seed");
-                break;
-                    
+                Items[itemName].Use(player);
             }
-            
-            
         }
     }
 }

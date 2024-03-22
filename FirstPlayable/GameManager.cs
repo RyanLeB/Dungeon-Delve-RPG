@@ -69,7 +69,7 @@ namespace FirstPlayable
             GameDisplay();
             foreach (var enemy in enemies)
             {
-                enemy.DrawMovement(player.positionX, player.positionY, map.mapWidth, map.mapHeight, map.layout, player, enemies);
+                enemy.Movement(player.positionX, player.positionY, map.mapWidth, map.mapHeight, map.layout, player, enemies);
             }
         }
 
