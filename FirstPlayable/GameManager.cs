@@ -98,8 +98,11 @@ namespace FirstPlayable
             Console.WriteLine("---------------------------------------------------------------------------------------------");
             Console.WriteLine("Enemies can drop valuables, so try not to skip them!");
             Console.WriteLine("---------------------------------------------------------------------------------------------");
+            Console.WriteLine("---------------------------------------------------------------------------------------------");
+            Console.WriteLine("Music used from: Maplestory (2005), PC, Nexon, Tokyo Japan");
                 
-            
+            Console.WriteLine("---------------------------------------------------------------------------------------------");
+            Console.WriteLine("");
             Console.WriteLine("It's dangerous to go alone... good luck!");
             Console.WriteLine("Press any key to start...");
             Console.ReadKey(true);
