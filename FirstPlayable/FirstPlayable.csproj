@@ -49,7 +49,7 @@
     <Compile Include="HUD.cs" />
     <Compile Include="ItemManager.cs" />
     <Compile Include="Map.cs" />
-    <Compile Include="Enemy.cs" />
+    <Compile Include="EnemyManager.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="HealthSystem.cs" />
     <Compile Include="Player.cs" />

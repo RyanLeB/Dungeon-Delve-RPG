@@ -22,9 +22,9 @@ namespace FirstPlayable
         public int initialEnemyPositionX { get; set; }
         public int initialEnemyPositionY { get; set; }
 
-        private List<Enemy> enemies;  
+        private List<EnemyManager> enemies;  
 
-        public Map(string mapFileName, List<Enemy> enemies)
+        public Map(string mapFileName, List<EnemyManager> enemies)
         {
             this.enemies = enemies;
             path = mapFileName;

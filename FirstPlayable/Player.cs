@@ -32,7 +32,7 @@ namespace FirstPlayable
         private char currentTile;
         
         // Enemy 
-        public Enemy currentEnemy { get; set; }
+        public EnemyManager currentEnemy { get; set; }
 
         // Log list
         private List<string> liveLog;
@@ -54,7 +54,7 @@ namespace FirstPlayable
 
 
         // Receives player input
-        public void PlayerInput(Map map, List<Enemy> enemies)
+        public void PlayerInput(Map map, List<EnemyManager> enemies)
         {
             ConsoleKeyInfo playerController;
             bool moved = false;
@@ -109,7 +109,7 @@ namespace FirstPlayable
         }
 
         // handles things like collision checks and what the player is moving towards
-        private void HandleMovement(Map map, List<Enemy> enemies, ref bool moved, ref int newPlayerPositionX, ref int newPlayerPositionY, int movementX, int movementY)
+        private void HandleMovement(Map map, List<EnemyManager> enemies, ref bool moved, ref int newPlayerPositionX, ref int newPlayerPositionY, int movementX, int movementY)
         {
             if (moved == false && map.layout[movementY, movementX] != '#')
             {
@@ -140,6 +140,19 @@ namespace FirstPlayable
                             UpdateLiveLog($"You Killed The {enemy.Name}");
                             UpdateLiveLog("+1 Damage Gained");
                             playerDamage += 1;
+                        }
+                        else if (enemy is Boss) // Check if the enemy is a Boss
+                        {
+                           
+                            healthSystem.Damage(enemy.enemyDamage);
+                            UpdateLiveLog($"Boss dealt {enemy.enemyDamage} damage to you!");
+                            if (healthSystem.IsDead())
+                            {
+                                gameOver = true;
+                            }
+                            
+                            
+                            
                         }
                         return;
                     }
@@ -178,17 +191,13 @@ namespace FirstPlayable
 
                 }
 
-                // next level
                 if (map.layout[movementY, movementX] == '%')
-                {
-                    levelComplete = true;
-                }
-
-                if (map.layout[movementY, movementX] == '>')
                 {
                     youWin = true;
                     gameOver = true;
                 }
+
+
 
                 // collectable seeds
                 if (map.layout[movementY, movementX] == '&')

@@ -17,7 +17,7 @@ namespace FirstPlayable
             this.map = map;
         }
 
-        public void DisplayHUD()
+        public void UpdateHUD()
         {
             string currentEnemyInfo = player.currentEnemy != null ? $"{player.currentEnemy.Name} | HP Remaining: ({player.currentEnemy.healthSystem.GetCurrentHealth()}/{player.currentEnemy.healthSystem.GetMaximumHealth()})" : "None";
             Console.SetCursorPosition(0, map.mapHeight + 1);
@@ -25,7 +25,7 @@ namespace FirstPlayable
             RedrawLiveLog();
         }
 
-        public void DisplayLegend()
+        public void UpdateLegend()
         {
             Console.SetCursorPosition(0, map.mapHeight + 2);
             Console.WriteLine($"\nPlayer Damage Level: {player.playerDamage}");

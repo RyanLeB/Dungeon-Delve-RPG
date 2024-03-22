@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FirstPlayable
 {
-    internal class Runner : Enemy
+    internal class Runner : EnemyManager
     {
 
         public Runner(int maxHealth, int damage, int startX, int startY, string name, char[,] mapLayout) : base(maxHealth, damage, startX, startY, name, mapLayout)
@@ -34,12 +34,13 @@ namespace FirstPlayable
         }
 
 
-        public override void Move(int playerX, int playerY, int mapWidth, int mapHeight, char[,] mapLayout, Player player, List<Enemy> enemies)
+        public override void Update(int playerX, int playerY, int mapWidth, int mapHeight, char[,] mapLayout, Player player, List<EnemyManager> enemies)
         {
             int enemyMovementX = positionX;
             int enemyMovementY = positionY;
             int newEnemyPositionX = positionX;
             int newEnemyPositionY = positionY;
+            
 
             if (mapLayout[newEnemyPositionY, newEnemyPositionX] != '#')
             {

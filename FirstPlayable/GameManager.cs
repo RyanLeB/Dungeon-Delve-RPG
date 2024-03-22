@@ -20,12 +20,14 @@ namespace FirstPlayable
     Goblin goblin;
     Runner runner;
     private Settings settings = new Settings();
-    private List<Enemy> enemies = new List<Enemy>();
+    private List<EnemyManager> enemies = new List<EnemyManager>();
     private HUD hud;
 
 
         public GameManager()
         {
+            // Initialization
+            
             map = new Map("RPGMap.txt", enemies);
             
             player = new Player(settings.PlayerInitialHealth, settings.PlayerInitialDamage, settings.PlayerInitialLevel, map.initialPlayerPositionX, map.initialPlayerPositionY, map.layout);
@@ -35,7 +37,7 @@ namespace FirstPlayable
             
             
             
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 1; i++)
             {
                 goblin = new Goblin(settings.GoblinInitialHealth, settings.GoblinInitialDamage + i, map.initialEnemyPositionX + i, map.initialEnemyPositionY, "Goblin", map.layout);
                 enemies.Add(goblin);
@@ -99,21 +101,28 @@ namespace FirstPlayable
 
        
 
-            // game loop keeps on as long as the game isn't over or you haven't won   
+        // game loop keeps on as long as the game isn't over or you haven't won   
+        
         while (!player.gameOver)    
         {
             Console.CursorVisible = false;
             StartLevel();
-            map.DrawMap(player, goblin, boss, runner);
-            hud.DisplayHUD();
             
-            hud.DisplayLegend();
-            PlayerInput();
-
+            map.DrawMap(player, goblin, boss, runner);
+            
+                
+            hud.UpdateLegend();
+            hud.UpdateHUD();
+            
+            
+            PlayerUpdate();
             foreach (var enemy in enemies)
             {
-                enemy.Move(player.positionX, player.positionY, map.mapWidth, map.mapHeight, map.layout, player, enemies);
+                enemy.Update(player.positionX, player.positionY, map.mapWidth, map.mapHeight, map.layout, player, enemies);
             }
+            
+            
+            
 
         }
 
@@ -165,19 +174,21 @@ namespace FirstPlayable
     }
 
 
-    private void PlayerInput()
+    private void PlayerUpdate()
     {
         try
-            {
+        {
             player.PlayerInput(map, enemies);
+        }
 
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
         }
     }
 }
+
+}
+
 
 

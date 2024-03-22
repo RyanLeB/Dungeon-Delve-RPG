@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FirstPlayable
 {
-    internal abstract class Enemy
+    internal abstract class EnemyManager
     {
         // variables | encapsulation
 
@@ -20,10 +20,10 @@ namespace FirstPlayable
 
         public char icon { get; set; }
         public string Name { get; set; }
-        public abstract void Move(int playerX, int playerY, int mapWidth, int mapHeight, char[,] mapLayout, Player player, List<Enemy> enemies);
+        public abstract void Update(int playerX, int playerY, int mapWidth, int mapHeight, char[,] mapLayout, Player player, List<EnemyManager> enemies);
 
         
-        public Enemy(int maxHealth, int damage, int startX, int startY, string name, char[,] mapLayout)
+        public EnemyManager(int maxHealth, int damage, int startX, int startY, string name, char[,] mapLayout)
         {
             healthSystem = new HealthSystem(maxHealth);
             enemyDamage = damage;

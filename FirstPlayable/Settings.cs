@@ -15,6 +15,7 @@ namespace FirstPlayable
         public int PlayerInitialDamage { get; set; } = 10;
         public int PlayerInitialLevel { get; set; } = 1;
         public string MapFileName { get; set; } = "RPGMap.txt";
+        public string MapFileName2 { get; set; } = "RPGMap2.txt";
 
 
         // Goblin settings
