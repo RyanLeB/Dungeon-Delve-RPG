@@ -157,7 +157,11 @@ namespace FirstPlayable
                                 healthSystem.Heal(1);
                                 UpdateLiveLog("Runner dropped health");
                                 UpdateLiveLog("+1 Health Gained");
-                            } 
+                            }
+                            if (enemy is Boss)
+                            {
+                                itemManager.UseItem("Seed");
+                            }
 
                         }
                         else if (enemy is Boss) // Check if the enemy is a Boss

@@ -22,8 +22,8 @@ namespace FirstPlayable
             switch (item)
             {
                 case "HealthPotion":
-                    player.healthSystem.Heal(1);
-                    player.UpdateLiveLog("Gained +1 health");
+                    player.healthSystem.Heal(2);
+                    player.UpdateLiveLog("Gained +2 health");
                 break;
                 
                 case "DamageBoost":

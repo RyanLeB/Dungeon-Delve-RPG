@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Media;
 
 namespace FirstPlayable
 {
@@ -28,6 +30,7 @@ namespace FirstPlayable
 
         public string currentLevel { get; set; }
 
+        public SoundPlayer soundPlayer;
 
         public void Init()
         {
@@ -40,9 +43,10 @@ namespace FirstPlayable
             map = new Map(currentLevel, enemies);
             player = new Player(settings.PlayerInitialHealth, settings.PlayerInitialDamage, settings.PlayerInitialLevel, map.initialPlayerPositionX, map.initialPlayerPositionY, map.layout, this);
             hud = new HUD(player, map);
+            soundPlayer = new SoundPlayer("DungeonMap.wav");
+            soundPlayer.PlayLooping();
             
 
-            
         }
             
 
@@ -62,7 +66,7 @@ namespace FirstPlayable
 
         public void Draw()
         {
-            Display();
+            GameDisplay();
             foreach (var enemy in enemies)
             {
                 enemy.DrawMovement(player.positionX, player.positionY, map.mapWidth, map.mapHeight, map.layout, player, enemies);
@@ -78,7 +82,7 @@ namespace FirstPlayable
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Welcome to Dungeon Delve");
             Console.WriteLine("-------------------------------");
-            Console.WriteLine("\nYour goal is to collect seeds '&' around a dungeon map while avoiding or defeating the enemies.");
+            Console.WriteLine("\nYour goal is to collect 30 seeds '&' around a dungeon map while avoiding or defeating the enemies.");
             Console.WriteLine("\nThe world is known as The Underworld");
             Console.WriteLine("---------------------------------------------------------------------------------------------");
             Console.WriteLine("You can attack by running into the enemy");
@@ -128,7 +132,7 @@ namespace FirstPlayable
         {
             Console.ForegroundColor = ConsoleColor.Black;
             Console.WriteLine("You win!");
-            Console.WriteLine($"\nYou collected: {player.currentSeeds} / 11 Seeds!");
+            Console.WriteLine($"\nYou collected: {player.currentSeeds} / 30 Seeds!");
             Console.WriteLine("Try to get more if you haven't got them all");
             Console.WriteLine("-------------------------------------------");
             Console.WriteLine("-------------------------------------------");
@@ -153,10 +157,10 @@ namespace FirstPlayable
 
         public void ChangeLevel()
         {
-            enemies.Clear();  
-            
-            
-            
+            enemies.Clear();
+
+
+
             if (currentLevel == "RPGMap.txt")
             {
                 currentLevel = "RPGMap2.txt";
@@ -165,7 +169,15 @@ namespace FirstPlayable
             {
                 currentLevel = "RPGMap3.txt";
             }
-
+            else if (currentLevel == "RPGMap3.txt")
+            {
+                currentLevel = "RPGMap4.txt";
+            }
+            else if (currentLevel == "RPGMap4.txt")
+            {
+                player.youWin = true;
+                player.gameOver = true;
+            }
             
             
             map = new Map(currentLevel, enemies);
@@ -184,6 +196,7 @@ namespace FirstPlayable
         private void StartLevel()
         {
             levelTimer.Start(); // Timer will start at beginning of level
+            
         }
 
         private void EndLevel()
@@ -197,7 +210,7 @@ namespace FirstPlayable
         }
 
 
-        private void Display()
+        private void GameDisplay()
         {
             player.PlayerInput(map, enemies);
            

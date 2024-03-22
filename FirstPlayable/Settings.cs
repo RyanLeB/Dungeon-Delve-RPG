@@ -26,7 +26,7 @@ namespace FirstPlayable
 
 
         // Boss settings
-        public int BossInitialHealth { get; set; } = 12;
+        public int BossInitialHealth { get; set; } = 28;
         public int BossInitialDamage { get; set; } = 2;
 
 
