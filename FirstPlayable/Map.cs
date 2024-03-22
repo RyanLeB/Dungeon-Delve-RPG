@@ -23,6 +23,7 @@ namespace FirstPlayable
         public int initialEnemyPositionY { get; set; }
 
         private List<EnemyManager> enemies;  
+        private Settings settings = new Settings();
 
         public Map(string mapFileName, List<EnemyManager> enemies)
         {
@@ -51,18 +52,39 @@ namespace FirstPlayable
                         initialPlayerPositionX = j;
                         initialPlayerPositionY = i;
                     }
+                    if (layout[i, j] == '=')
+                    {
+                        initialPlayerPositionX = j;
+                        initialPlayerPositionY = i;
+                        layout[i, j] = '-';
+                    }
                     else if (layout[i, j] == '*')
                     {
                         layout[i, j] = '-';
+
                         initialEnemyPositionX = j;
                         initialEnemyPositionY = i;
+                        var enemy = new Goblin(settings.GoblinInitialHealth,settings.GoblinInitialDamage, j, i, "Goblin", layout); 
+                        enemies.Add(enemy);
+                    }
+                    else if (layout[i, j] == '_')
+                    {
+                        layout[i, j] = '-';
+                        var runner = new Runner(settings.RunnerInitialHealth, settings.RunnerInitialDamage, j, i, "Runner", layout); 
+                        enemies.Add(runner);
+                    }
+                    else if (layout[i, j] == '@')
+                    {
+                        layout[i, j] = '-';
+                        var boss = new Boss(settings.BossInitialHealth, settings.BossInitialDamage, j, i, "Boss", layout);
+                        enemies.Add(boss);
                     }
                 }
             }
         }
 
         // draws out map on screen
-        public void DrawMap(Player player, Goblin goblin, Boss boss, Runner runner)
+        public void UpdateMap(Player player, Goblin goblin, Boss boss, Runner runner)
         {
             if (!mapDrawn)
             { 
@@ -134,6 +156,7 @@ namespace FirstPlayable
                         {
                             boss.positionX = l;
                             boss.positionY = k;
+
                             layout[k, l] = '-';
                         }
                         if (tile == '_' && !player.levelComplete)
@@ -161,9 +184,7 @@ namespace FirstPlayable
             {
                 enemy.Draw();
             }
-            goblin.Draw();
-            boss.Draw();
-            runner.Draw();
+           
             Console.SetCursorPosition(0, 0);
            
             

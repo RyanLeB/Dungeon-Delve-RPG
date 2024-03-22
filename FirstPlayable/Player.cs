@@ -31,6 +31,9 @@ namespace FirstPlayable
 
         private char currentTile;
         
+        // Settings
+        public Settings settings = new Settings();
+
         // Enemy 
         public EnemyManager currentEnemy { get; set; }
 
@@ -40,7 +43,13 @@ namespace FirstPlayable
         // Item Manager
         public ItemManager itemManager;
 
-        public Player(int maxHealth, int health, int damage, int startX, int startY, char[,] mapLayout)
+        public GameManager gameManager;
+
+        public Map map;
+
+        public List<EnemyManager> enemies;
+
+        public Player(int maxHealth, int health, int damage, int startX, int startY, char[,] mapLayout, GameManager gameManager)
         {
             healthSystem = new HealthSystem(maxHealth);
             healthSystem.Heal(health);
@@ -49,6 +58,7 @@ namespace FirstPlayable
             positionY = startY;
             currentTile = mapLayout[startY, startX];
             itemManager = new ItemManager(this);
+            this.gameManager = gameManager;
             liveLog = new List<string>();
         }
 
@@ -125,6 +135,9 @@ namespace FirstPlayable
                         {
                             gameOver = true;
                         }
+                        
+                        
+                        
                         if (enemy.healthSystem.IsDead())
                         {
                            enemy.enemyAlive = false;
@@ -138,8 +151,14 @@ namespace FirstPlayable
 
                             enemy.enemyAlive = false;
                             UpdateLiveLog($"You Killed The {enemy.Name}");
-                            UpdateLiveLog("+1 Damage Gained");
-                            playerDamage += 1;
+
+                            if (enemy is Runner)
+                            {
+                                healthSystem.Heal(1);
+                                UpdateLiveLog("Runner dropped health");
+                                UpdateLiveLog("+1 Health Gained");
+                            } 
+
                         }
                         else if (enemy is Boss) // Check if the enemy is a Boss
                         {
@@ -154,6 +173,7 @@ namespace FirstPlayable
                             
                             
                         }
+                        
                         return;
                     }
                 }
@@ -191,7 +211,12 @@ namespace FirstPlayable
 
                 }
 
-                if (map.layout[movementY, movementX] == '%')
+                if(map.layout[movementY, movementX] == '%')
+                {
+                    gameManager.ChangeLevel();
+                }
+
+                if (map.layout[movementY, movementX] == '>')
                 {
                     youWin = true;
                     gameOver = true;
@@ -309,6 +334,10 @@ namespace FirstPlayable
             Console.Write("!");
             Console.ResetColor();
         }
+
+        
+       
+
 
         public void UpdateLiveLog(string message) 
         {

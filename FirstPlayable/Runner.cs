@@ -34,7 +34,7 @@ namespace FirstPlayable
         }
 
 
-        public override void Update(int playerX, int playerY, int mapWidth, int mapHeight, char[,] mapLayout, Player player, List<EnemyManager> enemies)
+        public override void DrawMovement(int playerX, int playerY, int mapWidth, int mapHeight, char[,] mapLayout, Player player, List<EnemyManager> enemies)
         {
             int enemyMovementX = positionX;
             int enemyMovementY = positionY;
