@@ -74,5 +74,9 @@ namespace FirstPlayable
                 }
             }
         }
+        public void DrawQuestLog()
+        {
+
+        }
     }
 }
