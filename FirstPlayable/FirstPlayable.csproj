@@ -58,6 +58,8 @@
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Quest.cs" />
+    <Compile Include="QuestKillEnemies.cs" />
     <Compile Include="QuestManager.cs" />
     <Compile Include="Runner.cs" />
     <Compile Include="Seed.cs" />
