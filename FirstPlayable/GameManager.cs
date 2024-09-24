@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Media;
+using System.IO;
 
 namespace FirstPlayable
 {
@@ -40,21 +41,25 @@ namespace FirstPlayable
             {
                 currentLevel = settings.MapFileName;
             }
-            map = new Map(currentLevel, enemies);
+            map = new Map(GetPath(currentLevel), enemies);
             player = new Player(settings.PlayerInitialHealth, settings.PlayerInitialDamage, settings.PlayerInitialLevel, map.initialPlayerPositionX, map.initialPlayerPositionY, map.layout, this);
             hud = new HUD(player, map);
-            soundPlayer = new SoundPlayer("DungeonMap.wav");
+            soundPlayer = new SoundPlayer(GetPath(settings.MusicFileName));
             soundPlayer.PlayLooping();
             
 
         }
-            
-
-            
-            
-            
-            
-
+        
+        /// <summary>
+        /// Builds filepath for file from input filename and settings map / music directory
+        /// </summary>
+        /// <param name="fileName">filename of desired file</param>
+        /// <returns>The filepath for the file</returns>
+        public string GetPath(string fileName)
+        {
+            string path = Path.Combine(Environment.CurrentDirectory, settings.FileLocation, fileName);
+            return path;
+        }
 
         public void Update()
         {
@@ -164,26 +169,26 @@ namespace FirstPlayable
 
 
 
-            if (currentLevel == "RPGMap.txt")
+            if (currentLevel == settings.MapFileName)
             {
-                currentLevel = "RPGMap2.txt";
+                currentLevel = settings.Map2FileName;
             }
-            else if (currentLevel == "RPGMap2.txt")
+            else if (currentLevel == settings.Map2FileName)
             {
-                currentLevel = "RPGMap3.txt";
+                currentLevel = settings.Map3FileName;
             }
-            else if (currentLevel == "RPGMap3.txt")
+            else if (currentLevel == settings.Map3FileName)
             {
-                currentLevel = "RPGMap4.txt";
+                currentLevel = settings.Map4FileName;
             }
-            else if (currentLevel == "RPGMap4.txt")
+            else if (currentLevel == settings.Map4FileName)
             {
                 player.youWin = true;
                 player.gameOver = true;
             }
             
             
-            map = new Map(currentLevel, enemies);
+            map = new Map(GetPath(currentLevel), enemies);
             
             player.positionX = map.initialPlayerPositionX;
             player.positionY = map.initialPlayerPositionY;
