@@ -58,27 +58,22 @@
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Quest.cs" />
+    <Compile Include="QuestKillEnemies.cs" />
+    <Compile Include="QuestManager.cs" />
     <Compile Include="Runner.cs" />
     <Compile Include="Seed.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="ShopManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Maps-Music\DungeonMap.wav">
+    <Content Include="DungeonMap.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Maps-Music\RPGMap.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Maps-Music\RPGMap2.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Maps-Music\RPGMap3.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Maps-Music\RPGMap4.txt">
+    <Content Include="RPGMap.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
